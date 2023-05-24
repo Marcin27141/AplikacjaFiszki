@@ -1,14 +1,17 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QWidget, QLabel, QLineEdit, QPushButton
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedLayout, QWidget, QLabel, QLineEdit, QPushButton
 from PySide6.QtCore import Qt, QTimer
-import time
+from View.ViewUtilities import set_widget_font_size
+from View.IncorrectLayout import IncorrectLayout
 
 class BasicFlashcardTester(QWidget):
     RESULT_DISPLAY_TIME = 1
 
-    def __init__(self, flashcards) -> None:
+    def __init__(self, controller, flashcards) -> None:
         super().__init__()
+        self.controller = controller
         self.flashcards = flashcards
         self.flashcard_index = 0
+
         self.original_label = QLabel()
         self.initialize_flashcard_label()
         
@@ -21,46 +24,47 @@ class BasicFlashcardTester(QWidget):
         self.result_label = QLabel()
         self.initialize_result_label()
 
-        widget_layout = QVBoxLayout()
-        widget_layout.addWidget(self.original_label)
-        widget_layout.addWidget(self.translation_text)
-        widget_layout.addWidget(self.submit_button)
-        widget_layout.addWidget(self.result_label)
-        self.setLayout(widget_layout)
+        test_layout = QVBoxLayout()
+        test_layout.addWidget(self.original_label)
+        test_layout.addWidget(self.translation_text)
+        test_layout.addWidget(self.submit_button)
+        test_layout.addWidget(self.result_label)
+        self.test_widget = QWidget()
+        self.test_widget.setLayout(test_layout)
+
+        mistake_layout = IncorrectLayout(self.controller)
+        self.mistake_widget = QWidget()
+        self.mistake_widget.setLayout(mistake_layout)
+
+        self.stacked_layout = QStackedLayout()
+        self.stacked_layout.addWidget(self.test_widget)
+        self.stacked_layout.addWidget(self.mistake_widget)
+        self.setLayout(self.stacked_layout)
 
     def initialize_flashcard_label(self):
-        self.set_label_font(20)
+        set_widget_font_size(self.original_label, 20)
         self.original_label.setAlignment(Qt.AlignHCenter)
         if len(self.flashcards) > 0: self.original_label.setText(self.flashcards[0].original)
 
     def initialize_input_text(self):
-        self.set_text_input_font()
+        set_widget_font_size(self.translation_text, 15)
         self.translation_text.setAlignment(Qt.AlignHCenter)
         self.translation_text.setMaximumHeight(50)
 
     def initialize_result_label(self):
-        self.set_label_font(15)
+        set_widget_font_size(self.result_label, 15)
         self.result_label.setAlignment(Qt.AlignHCenter)
-
-    def set_label_font(self, size):
-        font = self.original_label.font()
-        font.setPointSize(size)
-        self.original_label.setFont(font)
-
-    def set_text_input_font(self):
-        font = self.translation_text.font()
-        font.setPointSize(15)
-        self.translation_text.setFont(font)
 
     def check_answer(self):
         is_correct = self.flashcards[self.flashcard_index].test_answer(self.translation_text.text())
         if is_correct:
             self.result_label.setText("CORRECT!")
             self.result_label.setStyleSheet("color: green;")
+            QTimer.singleShot(self.RESULT_DISPLAY_TIME * 1000, self.clear_results)
         else:
-            self.result_label.setText("INCORRECT!")
-            self.result_label.setStyleSheet("color: red;")
-        QTimer.singleShot(self.RESULT_DISPLAY_TIME * 1000, self.clear_results)
+            self.controller.change_to_mistake_layout(self.translation_text.text(), self.flashcards[self.flashcard_index])
+            #self.result_label.setText("INCORRECT!")
+            #self.result_label.setStyleSheet("color: red;")
         
     def clear_results(self):
         self.result_label.clear()

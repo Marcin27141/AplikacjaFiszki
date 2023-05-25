@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedLayout, QWidget, QLa
 from PySide6.QtCore import Qt, QTimer
 from View.ViewUtilities import set_widget_font_size
 from View.IncorrectLayout import IncorrectLayout
+from View.BasicResultLayout import ResultLayout
 
 class BasicFlashcardTester(QWidget):
     RESULT_DISPLAY_TIME = 1
@@ -36,9 +37,14 @@ class BasicFlashcardTester(QWidget):
         self.mistake_widget = QWidget()
         self.mistake_widget.setLayout(mistake_layout)
 
+        result_layout = ResultLayout(self.controller)
+        self.result_widget = QWidget()
+        self.result_widget.setLayout(result_layout)
+
         self.stacked_layout = QStackedLayout()
         self.stacked_layout.addWidget(self.test_widget)
         self.stacked_layout.addWidget(self.mistake_widget)
+        self.stacked_layout.addWidget(self.result_widget)
         self.setLayout(self.stacked_layout)
 
     def initialize_flashcard_label(self):
@@ -64,8 +70,6 @@ class BasicFlashcardTester(QWidget):
         else:
             self.controller.change_to_mistake_layout(self.translation_text.text(), self.flashcards[self.flashcard_index])
             self.show_next_flashcard()
-            #self.result_label.setText("INCORRECT!")
-            #self.result_label.setStyleSheet("color: red;")
         
     def clear_results(self):
         self.result_label.clear()
@@ -75,4 +79,10 @@ class BasicFlashcardTester(QWidget):
         if self.flashcard_index < len(self.flashcards) - 1:
             self.flashcard_index += 1
             self.original_label.setText(self.flashcards[self.flashcard_index].original)
-        self.translation_text.clear()
+            self.translation_text.clear()
+        else:
+            self.controller.show_test_summary()
+
+    def reset(self):
+        self.flashcard_index = 0
+        self.clear_results()

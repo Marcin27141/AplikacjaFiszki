@@ -10,3 +10,10 @@ class TestingController:
 
     def go_back_to_testing(self):
         self.test_widget.stacked_layout.setCurrentWidget(self.test_widget.test_widget)
+
+    def show_test_summary(self):
+        self.test_widget.stacked_layout.setCurrentWidget(self.test_widget.result_widget)
+
+    def retake_the_test(self):
+        self.test_widget.reset()
+        self.test_widget.stacked_layout.setCurrentWidget(self.test_widget.test_widget)

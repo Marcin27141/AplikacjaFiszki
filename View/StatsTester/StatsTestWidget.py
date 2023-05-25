@@ -16,10 +16,13 @@ class StatsTestWidget(BasicTestWidget):
 
     def show_test_summary(self):
         self.controller.show_test_summary(
-            len(self.flashcards),
-            len(self.flashcards_correct),
-            len(self.flashcards_incorrect)
+            self.flashcards,
+            self.flashcards_correct,
+            self.flashcards_incorrect
             )
+
+    def set_flashcards(self, new_flashcards):
+        self.flashcards = new_flashcards
 
     def reset(self):
         super().reset()

@@ -12,10 +12,12 @@ class TestingController:
         ))
         self.tester_widget.stacked_layout.setCurrentWidget(self.tester_widget.mistake_widget)
         self.tester_widget.test_widget.setEnabled(False)
+        self.tester_widget.mistake_widget.setEnabled(True)
 
     def go_back_to_testing(self):
         self.tester_widget.stacked_layout.setCurrentWidget(self.tester_widget.test_widget)
         self.tester_widget.test_widget.setEnabled(True)
+        self.tester_widget.mistake_widget.setEnabled(False)
         self.tester_widget.test_widget.show_next_flashcard()
 
     def show_test_summary(self):

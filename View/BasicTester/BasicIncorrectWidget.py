@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QEvent
 from PySide6.QtWidgets import QVBoxLayout, QPushButton, QLabel, QWidget
 from View.ViewUtilities import set_widget_font_size
 
@@ -25,6 +25,7 @@ class BasicIncorrectWidget(QWidget):
 
         self.button = QPushButton("Got it!")
         self.button.clicked.connect(self.go_back_to_testing)
+        #self.installEventFilter(self)
 
         widget_layout = QVBoxLayout()
         widget_layout.addWidget(self.incorrect_label)
@@ -33,6 +34,12 @@ class BasicIncorrectWidget(QWidget):
         widget_layout.addWidget(self.translation_label)
         widget_layout.addWidget(self.button)
         self.setLayout(widget_layout)
+
+    """def eventFilter(self, obj, event):
+            if event.type() == QEvent.KeyPress and event.key() == Qt.Key_Return:
+                self.button.click()
+                return True
+            return False"""
 
     def initialize_incorrect_label(self):
         set_widget_font_size(self.incorrect_label, 20)
@@ -45,4 +52,4 @@ class BasicIncorrectWidget(QWidget):
         self.translation_label.setText("Correct translation: " + incorrect_answer.flashcard.translation)
 
     def go_back_to_testing(self):
-        self.controller.go_back_to_testing()
+        self.controller.go_back_to_testing()       

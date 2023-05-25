@@ -1,8 +1,6 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedLayout, QWidget, QLabel, QLineEdit, QPushButton
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QWidget, QLabel, QLineEdit, QPushButton
 from PySide6.QtCore import Qt, QTimer
 from View.ViewUtilities import set_widget_font_size
-from View.BasicFlashCardTester.BasicIncorrectWidget import BasicIncorrectWidget
-from View.BasicFlashCardTester.BasicResultWidget import BasicResultWidget
 
 class BasicTestWidget(QWidget):
     RESULT_DISPLAY_TIME = 1

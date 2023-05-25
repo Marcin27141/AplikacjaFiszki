@@ -63,6 +63,7 @@ class BasicFlashcardTester(QWidget):
             QTimer.singleShot(self.RESULT_DISPLAY_TIME * 1000, self.clear_results)
         else:
             self.controller.change_to_mistake_layout(self.translation_text.text(), self.flashcards[self.flashcard_index])
+            self.show_next_flashcard()
             #self.result_label.setText("INCORRECT!")
             #self.result_label.setStyleSheet("color: red;")
         

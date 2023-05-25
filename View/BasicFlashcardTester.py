@@ -64,13 +64,19 @@ class BasicFlashcardTester(QWidget):
     def check_answer(self):
         is_correct = self.flashcards[self.flashcard_index].test_answer(self.translation_text.text())
         if is_correct:
-            self.result_label.setText("CORRECT!")
-            self.result_label.setStyleSheet("color: green;")
-            QTimer.singleShot(self.RESULT_DISPLAY_TIME * 1000, self.clear_results)
+            self.display_answer_correct()
         else:
-            self.controller.change_to_mistake_layout(self.translation_text.text(), self.flashcards[self.flashcard_index])
-            self.show_next_flashcard()
+            self.display_answer_incorrect()
         
+    def display_answer_correct(self):
+        self.result_label.setText("CORRECT!")
+        self.result_label.setStyleSheet("color: green;")
+        QTimer.singleShot(self.RESULT_DISPLAY_TIME * 1000, self.clear_results)
+
+    def display_answer_incorrect(self):
+        self.controller.change_to_mistake_layout(self.translation_text.text(), self.flashcards[self.flashcard_index])
+        self.show_next_flashcard()
+
     def clear_results(self):
         self.result_label.clear()
         self.show_next_flashcard()

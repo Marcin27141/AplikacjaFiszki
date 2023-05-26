@@ -1,4 +1,4 @@
-from Flashcards import Flashcard
+from Model.Flashcards import Flashcard
 from View.BasicView import StartView
 from Database.DatabaseManager import DatabaseManager
 

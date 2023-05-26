@@ -3,9 +3,9 @@ from View.BasicWindow import AppMainWindow
 import sys
 
 class StartView:
-    def __init__(self, flashcards):
+    def __init__(self, db_manager):
         self.app = QApplication(sys.argv)
-        self.window = AppMainWindow(flashcards)
+        self.window = AppMainWindow(db_manager)
     
     def show(self):
         self.window.show()

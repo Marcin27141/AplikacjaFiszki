@@ -34,12 +34,27 @@ class BasicIncorrectWidget(QWidget):
         widget_layout.addWidget(self.translation_label)
         widget_layout.addWidget(self.button)
         self.setLayout(widget_layout)
+        #self.setFocusPolicy(Qt.StrongFocus)
+
+    """def keyPressEvent(self, event):
+        if self.isEnabled() and self.isHidden() == False:
+            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+                self.button.click()"""
+
+    """def showEvent(self, event):
+        self.setFocus()
+        super().showEvent(event)
+
+    def focusInEvent(self, event):
+        self.setFocus()
+        super().focusInEvent(event)"""
 
     """def eventFilter(self, obj, event):
-            if event.type() == QEvent.KeyPress and event.key() == Qt.Key_Return:
+        if event.type() == QEvent.KeyPress:
+            if event.key() == Qt.Key_Return:
                 self.button.click()
                 return True
-            return False"""
+        return False"""
 
     def initialize_incorrect_label(self):
         set_widget_font_size(self.incorrect_label, 20)

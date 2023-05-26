@@ -22,8 +22,8 @@ def get_initial_flashcards():
     conn.close()
     return [Flashcard(original, translation) for (key, original, translation) in rows]
 
-conn, cursor = db_manager.get_database_connection_and_cursor()
-initial_flashcards = get_initial_flashcards()
+#conn, cursor = db_manager.get_database_connection_and_cursor()
+#initial_flashcards = get_initial_flashcards()
 
-start_view = StartView(initial_flashcards)
+start_view = StartView(db_manager)
 start_view.show()

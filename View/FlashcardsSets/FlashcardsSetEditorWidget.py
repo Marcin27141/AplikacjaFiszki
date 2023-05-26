@@ -1,10 +1,10 @@
 from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit
-from View.FlashcardSetEditor.FlashcardSetTable import FlashcardSetTable
-from View.FlashcardSetEditor.NameWidget import NameWidget
-from Flashcards import Flashcard
+from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
+from View.FlashcardsSets.NameWidget import NameWidget
+from Model.Flashcards import Flashcard
 from View.ViewUtilities import set_widget_font_size
 
-class FlashcardSetEditorWidget(QWidget):
+class FlashcardsSetEditorWidget(QWidget):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
@@ -12,7 +12,7 @@ class FlashcardSetEditorWidget(QWidget):
         self.name_widget = NameWidget()
         set_widget_font_size(self.name_widget, 15)
 
-        self.table = FlashcardSetTable()
+        self.table = FlashcardSetEditTable()
         
         self.add_button = QPushButton("Add Flashcard")
         self.add_button.clicked.connect(lambda: self.add_flashcard())
@@ -30,6 +30,9 @@ class FlashcardSetEditorWidget(QWidget):
     def add_flashcard(self):
         row_count = self.table.rowCount()
         self.table.insertRow(row_count)
+
+    def load_set_for_edit(self, flashcards_set):
+        self.table.load_set_for_edit(flashcards_set)
 
     def get_flashcards_list(self):
         flashcards = []

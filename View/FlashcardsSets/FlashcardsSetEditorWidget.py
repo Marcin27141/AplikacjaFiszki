@@ -17,6 +17,9 @@ class FlashcardsSetEditorWidget(QWidget):
         self.add_button = QPushButton("Add Flashcard")
         self.add_button.clicked.connect(lambda: self.add_flashcard())
 
+        self.return_button = QPushButton("Return")
+        self.return_button.clicked.connect(lambda: self.return_to_prevous())
+
         self.continue_button = QPushButton("Continue")
         self.continue_button.clicked.connect(lambda: self.process_flashcards())
 
@@ -24,12 +27,16 @@ class FlashcardsSetEditorWidget(QWidget):
         layout.addWidget(self.name_widget)
         layout.addWidget(self.table)
         layout.addWidget(self.add_button)
+        layout.addWidget(self.return_button)
         layout.addWidget(self.continue_button)
         self.setLayout(layout)
 
     def add_flashcard(self):
         row_count = self.table.rowCount()
         self.table.insertRow(row_count)
+
+    def return_to_prevous(self):
+        self.controller.return_from_set_editing()
 
     def load_set_for_edit(self, flashcards_set):
         self.table.load_set_for_edit(flashcards_set)

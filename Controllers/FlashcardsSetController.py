@@ -21,3 +21,6 @@ class FlashcardsSetController:
     def show_set_details(self, flashcards_set):
         self.flashcards_widget.edit_sets_widget.load_set_for_edit(flashcards_set)
         self.flashcards_widget.stacked_layout.setCurrentWidget(self.flashcards_widget.edit_sets_widget)
+
+    def return_from_set_editing(self):
+        self.flashcards_widget.stacked_layout.setCurrentWidget(self.flashcards_widget.show_sets_widget)

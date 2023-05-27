@@ -53,6 +53,12 @@ class DatabaseManager:
         self.create_table(name, cursor)
         self.populate_flashcards(cursor, name, flashcards)
         conn.close()
+
+    def delete_flashcards_set(self, set_name):
+        conn, cursor = self.get_database_connection_and_cursor()
+        cursor.execute(f"DROP TABLE IF EXISTS {set_name}")
+        conn.commit()
+        conn.close()
         
     def populate_flashcards(self, cursor, table_name, flashcards):
         flashcards_tuples = [(flashcard.original, flashcard.translation) for flashcard in flashcards]

@@ -5,16 +5,18 @@ from View.ViewUtilities import set_widget_font_size
 class FlashcardsSetListTable(QTableWidget):   
     def __init__(self, controller) -> None:
         super().__init__()
+        self.setColumnCount(1)
+        self.setHorizontalHeaderLabels(["Created sets"])
         self.controller = controller
         available_sets = controller.get_available_sets()
         self.populate_table(available_sets)
         self.itemClicked.connect(self.show_set_details)
 
-        self.setColumnCount(1)
-        self.setHorizontalHeaderLabels(["Created sets"])
         #self.setRowCount(len(available_sets))
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.horizontalHeader().setSectionsMovable(False)
+        self.horizontalHeader().setSectionsClickable(False)
+
 
         set_widget_font_size(self, 15)
         
@@ -34,7 +36,6 @@ class FlashcardsSetListTable(QTableWidget):
         self.clearContents()
         self.setRowCount(0)
         available_sets = self.controller.get_available_sets()
-        self.clear()
         self.populate_table(available_sets)
 
     

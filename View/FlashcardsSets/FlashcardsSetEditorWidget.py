@@ -24,13 +24,13 @@ class FlashcardsSetEditorWidget(QWidget):
         self.return_button = QPushButton("Return")
         self.return_button.clicked.connect(lambda: controller.return_from_set_editing())
 
-        self.continue_button = QPushButton("Continue")
-        self.continue_button.clicked.connect(lambda: self.process_flashcards())
+        self.save_button = QPushButton("Save")
+        self.save_button.clicked.connect(lambda: self.process_flashcards())
 
         navigation_buttons = QWidget()
         navigation_layout = QHBoxLayout()
         navigation_layout.addWidget(self.return_button)
-        navigation_layout.addWidget(self.continue_button)
+        navigation_layout.addWidget(self.save_button)
         navigation_buttons.setLayout(navigation_layout)
 
         layout = QVBoxLayout()
@@ -66,3 +66,9 @@ class FlashcardsSetEditorWidget(QWidget):
     def process_flashcards(self):
         new_set_name = self.name_widget.name_line_edit.text()
         self.controller.add_new_set(new_set_name, self.get_flashcards_list())
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.name_widget.name_line_edit.clear()
+        self.table.clearContents()
+        self.table.setRowCount(1)

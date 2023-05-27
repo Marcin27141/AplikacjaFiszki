@@ -20,7 +20,7 @@ class FlashcardSetEditTable(QTableWidget):
         #self.setCurrentCell(row_count, 0)
 
     def load_set_for_edit(self, flashcards_set):
-        self.clear()
+        self.clearContents()
         self.setRowCount(len(flashcards_set.flashcards))
         for row, flashcard in enumerate(flashcards_set.flashcards):
             original = QTableWidgetItem(flashcard.original)

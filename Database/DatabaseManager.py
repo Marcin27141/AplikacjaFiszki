@@ -21,6 +21,22 @@ class DatabaseManager:
             conn.commit()
         conn.close()
 
+    def is_valid_table_name(self, name):
+        if not name: return False
+        if not (name[0].isalpha() or name[0] == '_'): return False
+
+        valid_chars = set("_$")
+        for char in name[1:]:
+            if not (char.isalnum() or char in valid_chars):
+                return False
+        return True
+
+    def check_if_set_exists(self, set_name):
+        conn, cursor = self.get_database_connection_and_cursor()
+        result = self.check_if_table_exists(set_name, cursor)
+        conn.close()
+        return result
+
     def check_if_table_exists(self, table_name, cursor):
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (table_name,))
         result = cursor.fetchone()
@@ -38,13 +54,14 @@ class DatabaseManager:
         table_names = cursor.fetchall()
         flashcard_sets = []
         for table_name in table_names:
-            cursor.execute(f"SELECT * FROM {table_name[0]}")
-            flashcards = [Flashcard(original, translation) for (key, original, translation) in cursor.fetchall()]
-            flashcard_set = FlashcardsSet(table_name[0], flashcards)
-            flashcard_sets.append(flashcard_set)
+            flashcard_sets.append(self.get_set(table_name[0], cursor))
         conn.close()
         return flashcard_sets
-
+    
+    def get_set(self, set_name, cursor):
+        cursor.execute(f'SELECT * FROM {set_name}')
+        flashcards = [Flashcard(original, translation) for (key, original, translation) in cursor.fetchall()]
+        return FlashcardsSet(set_name, flashcards)
 
     def create_new_flashcards_set(self, name, flashcards):
         conn, cursor = self.get_database_connection_and_cursor()
@@ -52,7 +69,23 @@ class DatabaseManager:
             raise Exception("Set with given name already exists")
         self.create_table(name, cursor)
         self.populate_flashcards(cursor, name, flashcards)
+        conn.commit()
         conn.close()
+
+    def save_set(self, old_set_name, new_set_name, flashcards):
+        conn, cursor = self.get_database_connection_and_cursor()
+        if not self.check_if_table_exists(old_set_name, cursor):
+            raise Exception(f"table {old_set_name} doesn't exist")
+        else:
+            self.clear_table_contents(old_set_name)
+            self.populate_flashcards(cursor, old_set_name, flashcards)
+            conn.commit()
+            if old_set_name != new_set_name: self.rename_set(old_set_name, new_set_name, cursor)
+        conn.commit()
+        conn.close()
+
+    def rename_set(self, old_set_name, new_set_name, cursor):
+        cursor.execute(f"ALTER TABLE {old_set_name} RENAME TO {new_set_name}")
 
     def delete_flashcards_set(self, set_name):
         conn, cursor = self.get_database_connection_and_cursor()
@@ -63,3 +96,9 @@ class DatabaseManager:
     def populate_flashcards(self, cursor, table_name, flashcards):
         flashcards_tuples = [(flashcard.original, flashcard.translation) for flashcard in flashcards]
         cursor.executemany(f"INSERT INTO {table_name} (original, translation) VALUES (?, ?)", flashcards_tuples)
+
+    def clear_table_contents(self, table_name):
+        conn, cursor = self.get_database_connection_and_cursor()
+        cursor.execute(f"DELETE FROM {table_name}")
+        conn.commit()
+        conn.close()

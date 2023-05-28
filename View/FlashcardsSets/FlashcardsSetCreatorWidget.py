@@ -4,7 +4,7 @@ from View.FlashcardsSets.NameWidget import NameWidget
 from Model.Flashcards import Flashcard
 from View.ViewUtilities import set_widget_font_size
 
-class FlashcardsSetEditorWidget(QWidget):
+class FlashcardsSetCreatorWidget(QWidget):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
@@ -17,20 +17,16 @@ class FlashcardsSetEditorWidget(QWidget):
         self.add_button = QPushButton("Add Flashcard")
         self.add_button.clicked.connect(lambda: self.add_flashcard())
 
-        self.remove_button = QPushButton("Remove set")
-        self.remove_button.setStyleSheet("background-color: red; color: white")
-        self.remove_button.clicked.connect(lambda: controller.remove_set(self.displayed_set))
-
         self.return_button = QPushButton("Return")
-        self.return_button.clicked.connect(lambda: controller.return_from_set_editing())
+        self.return_button.clicked.connect(lambda: controller.return_from_set_creating())
 
-        self.save_button = QPushButton("Save")
-        self.save_button.clicked.connect(lambda: self.process_flashcards())
+        self.create_button = QPushButton("Create")
+        self.create_button.clicked.connect(lambda: self.process_flashcards())
 
         navigation_buttons = QWidget()
         navigation_layout = QHBoxLayout()
         navigation_layout.addWidget(self.return_button)
-        navigation_layout.addWidget(self.save_button)
+        navigation_layout.addWidget(self.create_button)
         navigation_buttons.setLayout(navigation_layout)
 
         self.error_label = QLabel()
@@ -40,7 +36,6 @@ class FlashcardsSetEditorWidget(QWidget):
         layout.addWidget(self.name_widget)
         layout.addWidget(self.table)
         layout.addWidget(self.add_button)
-        layout.addWidget(self.remove_button)
         layout.addWidget(navigation_buttons)
         layout.addWidget(self.error_label)
         self.setLayout(layout)
@@ -48,11 +43,6 @@ class FlashcardsSetEditorWidget(QWidget):
     def add_flashcard(self):
         row_count = self.table.rowCount()
         self.table.insertRow(row_count)        
-
-    def load_set_for_edit(self, flashcards_set):
-        self.displayed_set = flashcards_set
-        self.name_widget.name_line_edit.setText(flashcards_set.name)
-        self.table.load_set_for_edit(flashcards_set)
 
     def get_flashcards_list(self):
         flashcards = []
@@ -71,10 +61,10 @@ class FlashcardsSetEditorWidget(QWidget):
             self.error_label.setText("Name of the set is mandatory")
         elif not self.controller.is_valid_table_name(set_name):
             self.error_label.setText("This set name is not valid")
-        elif set_name != self.displayed_set.name and self.controller.check_if_set_exists(set_name):
+        elif self.controller.check_if_set_exists(set_name):
             self.error_label.setText("Set with given name already exists")
         else:
-            self.controller.save_set(self.displayed_set.name, set_name, self.get_flashcards_list())
+            self.controller.create_set(set_name, self.get_flashcards_list())
 
     def showEvent(self, event):
         super().showEvent(event)

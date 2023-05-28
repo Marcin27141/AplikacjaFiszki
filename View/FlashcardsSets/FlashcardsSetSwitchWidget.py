@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QTableWidget, QLineEdit, QTableWidgetItem, QHeader
 from PySide6.QtCore import Qt
 from View.FlashcardsSets.FlashcardsSetEditorWidget import FlashcardsSetEditorWidget
 from View.FlashcardsSets.FlashcardsSetViewerWidget import FlashcardsSetViewerWidget
+from View.FlashcardsSets.FlashcardsSetCreatorWidget import FlashcardsSetCreatorWidget
 
 class FlashcardsSetSwitchWidget(QWidget):
     def __init__(self, controller) -> None:
@@ -10,8 +11,10 @@ class FlashcardsSetSwitchWidget(QWidget):
 
         self.show_sets_widget = FlashcardsSetViewerWidget(self.controller)
         self.edit_sets_widget = FlashcardsSetEditorWidget(self.controller)
+        self.create_sets_widget = FlashcardsSetCreatorWidget(self.controller)
 
         self.stacked_layout = QStackedLayout()
         self.stacked_layout.addWidget(self.show_sets_widget)
         self.stacked_layout.addWidget(self.edit_sets_widget)
+        self.stacked_layout.addWidget(self.create_sets_widget)
         self.setLayout(self.stacked_layout)

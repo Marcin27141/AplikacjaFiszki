@@ -17,6 +17,13 @@ class FlashcardsSetController:
     def show_create_set_view(self):
         self.flashcards_widget.stacked_layout.setCurrentWidget(self.flashcards_widget.create_sets_widget)
 
+    def show_learn_view(self, flashcards_set):
+        self.flashcards_widget.learn_set_widget.load_set_for_learning(flashcards_set)
+        self.flashcards_widget.stacked_layout.setCurrentWidget(self.flashcards_widget.learn_set_widget)
+
+    def show_test_view(self, flashcards_set):
+        pass
+
     def create_set(self, new_set_name, flashcards):
         self.db_manager.create_new_flashcards_set(new_set_name, flashcards)
         self.flashcards_widget.stacked_layout.setCurrentWidget(self.flashcards_widget.show_sets_widget)
@@ -39,6 +46,9 @@ class FlashcardsSetController:
         self.flashcards_widget.stacked_layout.setCurrentWidget(self.flashcards_widget.show_sets_widget)
 
     def return_from_set_creating(self):
+        self.return_from_set_editing()
+
+    def return_from_set_learning(self):
         self.return_from_set_editing()
 
     def remove_set(self, set_to_remove):

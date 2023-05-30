@@ -4,5 +4,5 @@ from View.ViewUtilities import set_widget_font_size
 from View.BasicTester.BasicIncorrectWidget import BasicIncorrectWidget
 
 class StatsIncorrectWidget(BasicIncorrectWidget):
-    def __init__(self, controller):
-        super().__init__(controller)
+    def __init__(self):
+        super().__init__()

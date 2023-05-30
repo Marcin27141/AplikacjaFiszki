@@ -1,11 +1,16 @@
 from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, QAbstractAnimation, QVariantAnimation, QEasingCurve
+from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsWidget, QGraphicsOpacityEffect
 from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
+from View.FlashcardsSets.AnimationFlashcard import AnimationFlashcard
 from View.FlashcardsSets.NameWidget import NameWidget
 from Model.Flashcards import Flashcard
 from View.ViewUtilities import set_widget_font_size
 
 class FlashcardsSetLearnerWidget(QWidget):
+    RETURN_TO_MENU = Signal()
+    
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
@@ -34,7 +39,7 @@ class FlashcardsSetLearnerWidget(QWidget):
         navigation_buttons.setLayout(navigation_layout)
 
         self.return_button = QPushButton("Return")
-        self.return_button.clicked.connect(lambda: controller.return_from_set_learning())
+        self.return_button.clicked.connect(lambda: self.RETURN_TO_MENU.emit())
 
         layout = QVBoxLayout()
         layout.addWidget(self.flashcard_widget)

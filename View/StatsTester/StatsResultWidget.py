@@ -1,18 +1,15 @@
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QVBoxLayout, QPushButton, QLabel, QWidget
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import QVBoxLayout, QPushButton, QLabel, QWidget, QHBoxLayout
 from View.ViewUtilities import set_widget_font_size
 from View.StatsTester.TestedWordsListWidget import TestedWordsListWidget
 
-class TestResults:
-    def __init__(self, all_flashcards, correct_flascards, incorrect_flashcards) -> None:
-        self.all_flashcards = all_flashcards
-        self.correct_flashcards = correct_flascards
-        self.incorrect_flashcards = incorrect_flashcards
-
 class StatsResultWidget(QWidget):
-    def __init__(self, controller):
+    RETURN_TO_MENU = Signal()
+    CONTINUE_THE_TEST = Signal(object)
+    RETAKE_THE_TEST = Signal()
+
+    def __init__(self):
         super().__init__()
-        self.controller = controller
         self.title_label = QLabel("Your results:")
         self.initialize_title_label()
 
@@ -27,7 +24,16 @@ class StatsResultWidget(QWidget):
 
         self.tested_words_widget = TestedWordsListWidget()
 
+        self.finish_button = QPushButton("Finish")
+        self.finish_button.clicked.connect(self.RETURN_TO_MENU.emit)
+
         self.continue_button = QPushButton()
+
+        buttons_widget = QWidget()
+        buttons_layout = QHBoxLayout()
+        buttons_layout.addWidget(self.finish_button)
+        buttons_layout.addWidget(self.continue_button)
+        buttons_widget.setLayout(buttons_layout)
 
         widget_layout = QVBoxLayout()
         widget_layout.addWidget(self.title_label)
@@ -35,7 +41,7 @@ class StatsResultWidget(QWidget):
         widget_layout.addWidget(self.correct_flashcards_label)
         widget_layout.addWidget(self.incorrect_flashcards_label)
         widget_layout.addWidget(self.tested_words_widget)
-        widget_layout.addWidget(self.continue_button)
+        widget_layout.addWidget(buttons_widget)
         self.setLayout(widget_layout)
 
     def initialize_title_label(self):
@@ -43,6 +49,7 @@ class StatsResultWidget(QWidget):
         self.title_label.setAlignment(Qt.AlignHCenter)
 
     def present_results(self, test_results):
+        self.incorrect_flashcards = test_results.incorrect_flashcards
         self.all_flashcards_label.setText("Tested words: " + str(len(test_results.all_flashcards)))
         self.correct_flashcards_label.setText("Words correct: " + str(len(test_results.correct_flashcards)))
         self.incorrect_flashcards_label.setText("Words incorrect: " + str(len(test_results.incorrect_flashcards)))
@@ -52,13 +59,7 @@ class StatsResultWidget(QWidget):
     def present_the_button(self, is_over):
         if is_over:
             self.continue_button.setText("Try Again")
-            self.continue_button.clicked.connect(self.retake_the_test)
+            self.continue_button.clicked.connect(lambda: self.RETAKE_THE_TEST.emit())
         else:
             self.continue_button.setText("Continue")
-            self.continue_button.clicked.connect(self.continue_the_test)
-
-    def continue_the_test(self):
-        self.controller.continue_the_test()
-
-    def retake_the_test(self):
-        self.controller.retake_the_test()
+            self.continue_button.clicked.connect(lambda: self.CONTINUE_THE_TEST.emit(self.incorrect_flashcards))

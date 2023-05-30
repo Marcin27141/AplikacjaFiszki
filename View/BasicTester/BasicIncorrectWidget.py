@@ -1,16 +1,12 @@
-from PySide6.QtCore import Qt, QEvent
+from PySide6.QtCore import Qt, QEvent, Signal
 from PySide6.QtWidgets import QVBoxLayout, QPushButton, QLabel, QWidget
 from View.ViewUtilities import set_widget_font_size
 
-class IncorrectAnswer:
-    def __init__(self, flashcard, given_answer) -> None:
-        self.flashcard = flashcard
-        self.given_answer = given_answer
-
 class BasicIncorrectWidget(QWidget):
-    def __init__(self, controller):
+    GO_BACK_TO_TESTING = Signal()
+
+    def __init__(self):
         super().__init__()
-        self.controller = controller
         self.incorrect_label = QLabel("INCORRECT!")
         self.initialize_incorrect_label()
 
@@ -24,7 +20,7 @@ class BasicIncorrectWidget(QWidget):
         set_widget_font_size(self.incorrect_label, 15)
 
         self.button = QPushButton("Got it!")
-        self.button.clicked.connect(self.go_back_to_testing)
+        self.button.clicked.connect(self.GO_BACK_TO_TESTING.emit)
         #self.installEventFilter(self)
 
         widget_layout = QVBoxLayout()
@@ -64,7 +60,4 @@ class BasicIncorrectWidget(QWidget):
     def present_incorrect_answer(self, incorrect_answer):
         self.original_label.setText("Tested word: " + incorrect_answer.flashcard.original)
         self.given_answer_label.setText("Your answer: " + incorrect_answer.given_answer)
-        self.translation_label.setText("Correct translation: " + incorrect_answer.flashcard.translation)
-
-    def go_back_to_testing(self):
-        self.controller.go_back_to_testing()       
+        self.translation_label.setText("Correct translation: " + incorrect_answer.flashcard.translation)     

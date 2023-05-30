@@ -1,10 +1,23 @@
 from View.BasicTester.BasicTestWidget import BasicTestWidget
+from PySide6.QtCore import Qt, Signal
+class TestResults:
+    def __init__(self, all_flashcards, correct_flascards, incorrect_flashcards) -> None:
+        self.all_flashcards = all_flashcards
+        self.correct_flashcards = correct_flascards
+        self.incorrect_flashcards = incorrect_flashcards
 
 class StatsTestWidget(BasicTestWidget):
-    def __init__(self, controller, flashcards) -> None:
-        super().__init__(controller, flashcards)
+    SHOW_TEST_SUMMARY_VIEW = Signal(object)
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.original_flashcards = []
         self.flashcards_correct = []
         self.flashcards_incorrect = []
+
+    def load_flashcards_for_learning(self, flashcards_set):
+        super().load_flashcards_for_learning(flashcards_set)
+        self.original_flashcards = flashcards_set.flashcards
 
     def check_answer(self):
         super().check_answer()
@@ -15,16 +28,17 @@ class StatsTestWidget(BasicTestWidget):
             self.flashcards_incorrect.append(self.get_current_flashcard())
 
     def show_test_summary(self):
-        self.controller.show_test_summary(
+        self.SHOW_TEST_SUMMARY_VIEW.emit(TestResults(
             self.flashcards,
             self.flashcards_correct,
             self.flashcards_incorrect
-            )
+            ))
 
     def set_flashcards(self, new_flashcards):
         self.flashcards = new_flashcards
 
-    def reset(self):
-        super().reset()
+    def reset(self, strong = False):
+        if strong: self.flashcards = self.original_flashcards
         self.flashcards_correct = []
         self.flashcards_incorrect = []
+        super().reset()

@@ -1,10 +1,13 @@
 from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit
+from PySide6.QtCore import Qt, Signal
 from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
 from View.FlashcardsSets.NameWidget import NameWidget
 from Model.Flashcards import Flashcard
 from View.ViewUtilities import set_widget_font_size
 
 class FlashcardsSetCreatorWidget(QWidget):
+    RETURN_TO_MENU = Signal()
+    
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
@@ -18,7 +21,7 @@ class FlashcardsSetCreatorWidget(QWidget):
         self.add_button.clicked.connect(lambda: self.add_flashcard())
 
         self.return_button = QPushButton("Return")
-        self.return_button.clicked.connect(lambda: controller.return_from_set_creating())
+        self.return_button.clicked.connect(lambda: self.RETURN_TO_MENU.emit())
 
         self.create_button = QPushButton("Create")
         self.create_button.clicked.connect(lambda: self.process_flashcards())
@@ -65,6 +68,7 @@ class FlashcardsSetCreatorWidget(QWidget):
             self.error_label.setText("Set with given name already exists")
         else:
             self.controller.create_set(set_name, self.get_flashcards_list())
+            self.returnToMenu.emit()
 
     def showEvent(self, event):
         super().showEvent(event)

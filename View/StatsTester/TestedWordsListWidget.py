@@ -9,9 +9,9 @@ class TestedWordsListWidget(QTableWidget):
         self.setHorizontalHeaderLabels(["Original", "Translation"])
         self.setEditTriggers(QTableWidget.NoEditTriggers)
         self.setSelectionMode(QTableWidget.NoSelection)
-        self.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.horizontalHeader().setSectionsClickable(False)
         self.horizontalHeader().setSectionsMovable(False)
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         set_widget_font_size(self, 15)
 
     def present_tested_flashcards(self, tested_flashcards):

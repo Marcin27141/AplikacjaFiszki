@@ -1,8 +1,11 @@
+from typing import Optional
 from PySide6.QtWidgets import QTableWidget, QLineEdit, QTableWidgetItem, QHeaderView, QAbstractItemView, QPushButton
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal, QObject
 from View.ViewUtilities import set_widget_font_size
 
-class FlashcardsSetListTable(QTableWidget):   
+class FlashcardsSetListTable(QTableWidget):     
+    SHOW_SET_DETAILS_VIEW = Signal(object)
+
     def __init__(self, controller) -> None:
         super().__init__()
         self.setColumnCount(1)
@@ -29,7 +32,7 @@ class FlashcardsSetListTable(QTableWidget):
 
     def show_set_details(self, item):
         flashcards_set = item.data(self.controller.SET_ROLE)
-        self.controller.show_set_details(flashcards_set)
+        self.SHOW_SET_DETAILS_VIEW.emit(flashcards_set)
 
     def showEvent(self, event):
         super().showEvent(event)

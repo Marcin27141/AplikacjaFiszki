@@ -1,16 +1,32 @@
 from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit
+from PySide6.QtCore import Qt, Signal
 from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
 from View.FlashcardsSets.NameWidget import NameWidget
 from Model.Flashcards import Flashcard
 from View.ViewUtilities import set_widget_font_size
 
 class FlashcardsSetEditorWidget(QWidget):
+    RETURN_TO_MENU = Signal()
+    SHOW_LEARN_VIEW = Signal(object)
+    SHOW_TEST_VIEW = Signal(object)
+    
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
 
         self.name_widget = NameWidget()
         set_widget_font_size(self.name_widget, 15)
+
+        self.learn_button = QPushButton("Learn")
+        self.learn_button.clicked.connect(lambda: self.SHOW_LEARN_VIEW.emit(self.displayed_set))
+        self.test_button = QPushButton("Test")
+        self.test_button.clicked.connect(lambda: self.SHOW_TEST_VIEW.emit(self.displayed_set))
+
+        activity_buttons = QWidget()
+        activity_layout = QHBoxLayout()
+        activity_layout.addWidget(self.learn_button)
+        activity_layout.addWidget(self.test_button)
+        activity_buttons.setLayout(activity_layout)
 
         self.table = FlashcardSetEditTable()
         
@@ -19,10 +35,10 @@ class FlashcardsSetEditorWidget(QWidget):
 
         self.remove_button = QPushButton("Remove set")
         self.remove_button.setStyleSheet("background-color: red; color: white")
-        self.remove_button.clicked.connect(lambda: controller.remove_set(self.displayed_set))
+        self.remove_button.clicked.connect(self.remove_set)
 
         self.return_button = QPushButton("Return")
-        self.return_button.clicked.connect(lambda: controller.return_from_set_editing())
+        self.return_button.clicked.connect(lambda: self.RETURN_TO_MENU.emit())
 
         self.save_button = QPushButton("Save")
         self.save_button.clicked.connect(lambda: self.process_flashcards())
@@ -38,6 +54,7 @@ class FlashcardsSetEditorWidget(QWidget):
 
         layout = QVBoxLayout()
         layout.addWidget(self.name_widget)
+        layout.addWidget(activity_buttons)
         layout.addWidget(self.table)
         layout.addWidget(self.add_button)
         layout.addWidget(self.remove_button)
@@ -65,6 +82,10 @@ class FlashcardsSetEditorWidget(QWidget):
                 flashcards.append(Flashcard(original_text, translation_text))
         return flashcards
 
+    def remove_set(self):
+        self.controller.remove_set(self.displayed_set)
+        self.returnToMenu.emit()
+
     def process_flashcards(self):
         set_name = self.name_widget.name_line_edit.text()
         if not len(set_name) > 0:
@@ -75,6 +96,7 @@ class FlashcardsSetEditorWidget(QWidget):
             self.error_label.setText("Set with given name already exists")
         else:
             self.controller.save_set(self.displayed_set.name, set_name, self.get_flashcards_list())
+            self.returnToMenu.emit()   
 
     def showEvent(self, event):
         super().showEvent(event)

@@ -12,7 +12,7 @@ class BasicResultWidget(QWidget):
         self.initialize_title_label()
 
         self.finish_button = QPushButton("Finish")
-        self.again_button.clicked.connect(self.RETURN_TO_MENU.emit)
+        self.finish_button.clicked.connect(self.RETURN_TO_MENU.emit)
 
         self.again_button = QPushButton("Try again")
         self.again_button.clicked.connect(self.RETAKE_THE_TEST.emit)

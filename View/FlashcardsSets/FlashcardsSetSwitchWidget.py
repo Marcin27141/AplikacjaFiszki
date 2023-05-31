@@ -5,6 +5,7 @@ from View.FlashcardsSets.FlashcardsSetViewerWidget import FlashcardsSetViewerWid
 from View.FlashcardsSets.FlashcardsSetCreatorWidget import FlashcardsSetCreatorWidget
 from View.FlashcardsSets.FlashcardsSetLearnerWidget import FlashcardsSetLearnerWidget
 from View.StatsTester.StatsFlashcardTester import StatsFlashcardTester
+from View.TimeTester.TimeTesterSwitch import TimeTesterSwitch
 
 class FlashcardsSetSwitchWidget(QWidget):
     def __init__(self, controller) -> None:
@@ -26,7 +27,8 @@ class FlashcardsSetSwitchWidget(QWidget):
         self.create_sets_widget = FlashcardsSetCreatorWidget(self.controller)
         self.create_sets_widget.RETURN_TO_MENU.connect(lambda: self.stacked_layout.setCurrentWidget(self.show_sets_widget))
 
-        self.tester_widget = StatsFlashcardTester()
+        #self.tester_widget = StatsFlashcardTester()
+        self.tester_widget = TimeTesterSwitch()
         self.tester_widget.RETURN_TO_MENU.connect(lambda: self.stacked_layout.setCurrentWidget(self.show_sets_widget))
 
         self.stacked_layout = QStackedLayout()

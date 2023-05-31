@@ -84,7 +84,7 @@ class FlashcardsSetEditorWidget(QWidget):
 
     def remove_set(self):
         self.controller.remove_set(self.displayed_set)
-        self.returnToMenu.emit()
+        self.RETURN_TO_MENU.emit()
 
     def process_flashcards(self):
         set_name = self.name_widget.name_line_edit.text()
@@ -96,7 +96,7 @@ class FlashcardsSetEditorWidget(QWidget):
             self.error_label.setText("Set with given name already exists")
         else:
             self.controller.save_set(self.displayed_set.name, set_name, self.get_flashcards_list())
-            self.returnToMenu.emit()   
+            self.RETURN_TO_MENU.emit()   
 
     def showEvent(self, event):
         super().showEvent(event)

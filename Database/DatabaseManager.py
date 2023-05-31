@@ -58,6 +58,12 @@ class DatabaseManager:
         conn.close()
         return flashcard_sets
     
+    def get_set_by_name(self, set_name):
+        conn, cursor = self.get_database_connection_and_cursor()
+        result = self.get_set(set_name, cursor)
+        conn.close()
+        return result
+
     def get_set(self, set_name, cursor):
         cursor.execute(f'SELECT * FROM {set_name}')
         flashcards = [Flashcard(original, translation) for (key, original, translation) in cursor.fetchall()]

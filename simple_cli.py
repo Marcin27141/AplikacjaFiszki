@@ -29,14 +29,31 @@ def try_create_set(name, flashcards):
         CLI_Utilities.create_set(name, flashcards)
         print("Done")
 
+def export_set_to_file(args):
+    if not CLI_Utilities.check_if_directory_exists(args.directory): print("Directory doesn't exist")
+    if not CLI_Utilities.check_if_set_exists(args.set): print("Set with given name doesn't exist")
+    else:
+        if not args.name: args.name = args.set
+        if 'separator' not in args: args.separator = ' - '
+        set_text = CLI_Utilities.get_set_to_text(args.set, args.separator)
+        CLI_Utilities.write_set_text_to_file(set_text, args.directory, args.name)
+        print("Done")
+
 
 subparsers = parser.add_subparsers(dest='subparse',help='sub-command help')
 
 load_set_parser = subparsers.add_parser('load_set_from_file', help='load a new set from a file')
-load_set_parser.add_argument('-f', dest='file' , required=True, help='Path to the file')
+load_set_parser.add_argument('-f', dest='directory' , required=True, help='Path to the file')
 load_set_parser.add_argument('-n', dest='name' , required=True, help='Name of the created set')
 load_set_parser.add_argument('-s', dest='separator' , required=True, help='Separator used in the file')
 load_set_parser.set_defaults(func=load_set_from_file)
+
+export_set_parser = subparsers.add_parser('export_set_to_file', help='export an existing set to a file')
+export_set_parser.add_argument('--set', dest='set', required=True, help='Set being exported')
+export_set_parser.add_argument('-d', dest='directory' , required=True, help='Path to the directory')
+export_set_parser.add_argument('-n', dest='name' , required=False, help='Name of the file')
+export_set_parser.add_argument('-s', dest='separator' , required=False, help='Separator used in the file')
+export_set_parser.set_defaults(func=export_set_to_file)
 
 args = parser.parse_args()
 

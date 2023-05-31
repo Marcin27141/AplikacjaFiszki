@@ -1,4 +1,5 @@
 import os
+import shutil
 from Controllers.FlashcardsSetController import FlashcardsSetController
 from Database.DatabaseManager import DatabaseManager
 from Model.Flashcards import Flashcard
@@ -42,3 +43,16 @@ def write_set_text_to_file(set_text, directory, name):
     filepath = os.path.join(directory, name)
     with open(filepath, "w", encoding='utf-8') as file:
         file.write(set_text)
+
+def export_all_sets_to_archive(directory, name, separator):
+    temp_directory = "temp_directory"
+    os.makedirs(temp_directory)
+    if check_if_file_exists(os.path.join(directory, name)): name = name+"_copy"
+    filepath = os.path.join(directory, name)
+    all_sets = db_manager.get_all_sets()
+    for index, flashcards_set in enumerate(all_sets):
+        filename = f'{flashcards_set.name}.txt'
+        set_text = get_set_to_text(flashcards_set.name, separator)
+        write_set_text_to_file(set_text, temp_directory, filename)
+    shutil.make_archive(name, 'zip', temp_directory)  # Create the archive
+    shutil.rmtree(temp_directory)

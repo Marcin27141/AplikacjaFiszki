@@ -34,9 +34,17 @@ def export_set_to_file(args):
     if not CLI_Utilities.check_if_set_exists(args.set): print("Set with given name doesn't exist")
     else:
         if not args.name: args.name = args.set
-        if 'separator' not in args: args.separator = ' - '
+        if not args.separator: args.separator = ' - '
         set_text = CLI_Utilities.get_set_to_text(args.set, args.separator)
         CLI_Utilities.write_set_text_to_file(set_text, args.directory, args.name)
+        print("Done")
+    
+def export_all_sets(args):
+    if not CLI_Utilities.check_if_directory_exists(args.directory): print("Directory doesn't exist")
+    else:
+        if not args.name: args.name = 'CreatedSets'
+        if not args.separator: args.separator = ' - '
+        CLI_Utilities.export_all_sets_to_archive(args.directory, args.name, args.separator)
         print("Done")
 
 
@@ -54,6 +62,12 @@ export_set_parser.add_argument('-d', dest='directory' , required=True, help='Pat
 export_set_parser.add_argument('-n', dest='name' , required=False, help='Name of the file')
 export_set_parser.add_argument('-s', dest='separator' , required=False, help='Separator used in the file')
 export_set_parser.set_defaults(func=export_set_to_file)
+
+export_all_sets_parser = subparsers.add_parser('export_all_sets', help='export all sets to an archive')
+export_all_sets_parser.add_argument('-d', dest='directory' , required=True, help='Path to the directory')
+export_all_sets_parser.add_argument('-n', dest='name' , required=False, help='Name of the archive')
+export_all_sets_parser.add_argument('-s', dest='separator' , required=False, help='Separator used in sets files')
+export_all_sets_parser.set_defaults(func=export_all_sets)
 
 args = parser.parse_args()
 

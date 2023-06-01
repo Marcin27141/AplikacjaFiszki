@@ -37,9 +37,9 @@ class TimeTestWidget(QWidget):
     def load_flashcards_for_learning(self, flashcards_set):
         self.flashcards = flashcards_set.flashcards
         self.initialize_flashcard_label()
-        self.initialize_answer_buttons()
+        self.load_answer_buttons()
 
-    def initialize_answer_buttons(self):
+    def load_answer_buttons(self):
         right_answer = self.get_current_flashcard().translation
         other_flashcards = self.flashcards[:self.flashcard_index] + self.flashcards[self.flashcard_index + 1:]
         incorrect_answers = random.sample(other_flashcards, self.NUM_OF_POSSIBILITIES - 1)
@@ -63,10 +63,9 @@ class TimeTestWidget(QWidget):
         self.display_result(is_correct, button)
         
     def display_result(self, is_correct, button):
-        #TODO fix, not working
-        back_color = 'green' if is_correct else 'red'
+        background_color = 'green' if is_correct else 'red'
         text_color = 'black' if is_correct else 'white'
-        button.setStyleSheet(f"background-color: {back_color};color: {text_color}")
+        button.setStyleSheet(f"background-color: {background_color};color: {text_color}")
         button.repaint()
         QTimer.singleShot(self.RESULT_DISPLAY_TIME * 1000, self.show_next_flashcard)
 
@@ -75,8 +74,9 @@ class TimeTestWidget(QWidget):
             button.setStyleSheet(f"background-color: white;color: black")
 
     def show_next_flashcard(self):
-        self.reset_buttons_colors()
         if self.flashcard_index < len(self.flashcards) - 1:
+            self.reset_buttons_colors()
+            self.load_answer_buttons()
             self.flashcard_index += 1
             self.original_label.setText(self.get_current_flashcard().original)
         else:
@@ -88,3 +88,4 @@ class TimeTestWidget(QWidget):
     def reset(self, strong = False):
         self.flashcard_index = 0
         self.initialize_flashcard_label()
+        self.reset_buttons_colors()

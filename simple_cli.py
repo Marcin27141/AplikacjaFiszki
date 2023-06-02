@@ -1,5 +1,12 @@
 import argparse
 from CLI import CLI_Utilities
+from CLI.FileOperator import FileOperator, FileAlias
+from CLI.Exporters.BaseExporter import ExportInfo
+from CLI.Exporters.SingleSetExporter import SingleSetExporter
+from CLI.Exporters.AllSetsExporter import AllSetsExporter
+from CLI.FlashcardsSetImporter import FlashcardsSetImporter, ImportInfo
+
+FILE_OPERATOR = FileOperator()
 
 PROGRAM_NAME = 'Flashcards Application'
 PROGRAM_DESCRIPTION = 'Interface for Flashcards Application'
@@ -12,52 +19,48 @@ parser = argparse.ArgumentParser(
 )
 
 def load_set_from_file(args):
-    if not CLI_Utilities.check_if_file_exists(args.file): print("File doesn't exist")
+    import_info = ImportInfo(args.filepath, args.name, args.separator)
+    importer = FlashcardsSetImporter(import_info)
+
+    if not importer.check_if_file_exists(): print("File doesn't exist")
+    if not importer.check_if_name_is_valid(): print(f"Name {args.name} is not a valid set name")
+    elif importer.check_if_set_exists(): print(f"Set with given name already exists")
     else:
         try:
-            flashcards = CLI_Utilities.convert_text_to_flashcards(args.file, args.separator)
-            try_create_set(args.name, flashcards)
+            importer.import_set()
+            print("Done")
         except Exception:
             print("File is not properly formatted")
 
-def try_create_set(name, flashcards):
-    if not CLI_Utilities.check_if_name_is_valid(name):
-        print(f"Name {name} is not a valid set name")
-    elif CLI_Utilities.check_if_set_exists(name):
-        print(f"Set with given name already exists")
-    else:
-        CLI_Utilities.create_set(name, flashcards)
-        print("Done")
-
 def export_set_to_file(args):
-    if not CLI_Utilities.check_if_directory_exists(args.directory): print("Directory doesn't exist")
-    if not CLI_Utilities.check_if_set_exists(args.set): print("Set with given name doesn't exist")
+    export_info = ExportInfo(args.directory, args.name, args.separator)
+    exporter = SingleSetExporter(args.set_name, export_info)
+
+    if not exporter.check_if_directory_exists(): print("Directory doesn't exist")
+    if not exporter.check_if_set_exists(): print("Set with given name doesn't exist")
     else:
-        if not args.name: args.name = args.set
-        if not args.separator: args.separator = ' - '
-        set_text = CLI_Utilities.get_set_to_text(args.set, args.separator)
-        CLI_Utilities.write_set_text_to_file(set_text, args.directory, args.name)
+        exporter.export_set()
         print("Done")
     
 def export_all_sets(args):
-    if not CLI_Utilities.check_if_directory_exists(args.directory): print("Directory doesn't exist")
-    else:
-        if not args.name: args.name = 'CreatedSets'
-        if not args.separator: args.separator = ' - '
-        CLI_Utilities.export_all_sets_to_archive(args.directory, args.name, args.separator)
-        print("Done")
+    export_info = ExportInfo(args.directory, args.name, args.separator)
+    exporter = AllSetsExporter(export_info)
 
+    if not exporter.check_if_directory_exists(): print("Directory doesn't exist")
+    else:
+        exporter.export_sets()
+        print("Done")
 
 subparsers = parser.add_subparsers(dest='subparse',help='sub-command help')
 
 load_set_parser = subparsers.add_parser('load_set_from_file', help='load a new set from a file')
-load_set_parser.add_argument('-f', dest='directory' , required=True, help='Path to the file')
+load_set_parser.add_argument('-f', dest='filepath', required=True, help='Path to the file')
 load_set_parser.add_argument('-n', dest='name' , required=True, help='Name of the created set')
 load_set_parser.add_argument('-s', dest='separator' , required=True, help='Separator used in the file')
 load_set_parser.set_defaults(func=load_set_from_file)
 
 export_set_parser = subparsers.add_parser('export_set_to_file', help='export an existing set to a file')
-export_set_parser.add_argument('--set', dest='set', required=True, help='Set being exported')
+export_set_parser.add_argument('--set', dest='set_name', required=True, help='Set being exported')
 export_set_parser.add_argument('-d', dest='directory' , required=True, help='Path to the directory')
 export_set_parser.add_argument('-n', dest='name' , required=False, help='Name of the file')
 export_set_parser.add_argument('-s', dest='separator' , required=False, help='Separator used in the file')

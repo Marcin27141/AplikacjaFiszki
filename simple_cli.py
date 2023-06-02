@@ -1,12 +1,8 @@
 import argparse
-from CLI import CLI_Utilities
-from CLI.FileOperator import FileOperator, FileAlias
-from CLI.Exporters.BaseExporter import ExportInfo
 from CLI.Exporters.SingleSetExporter import SingleSetExporter
 from CLI.Exporters.AllSetsExporter import AllSetsExporter
 from CLI.FlashcardsSetImporter import FlashcardsSetImporter, ImportInfo
-
-FILE_OPERATOR = FileOperator()
+from CLI.Exporters.BaseExporter import ExportInfo
 
 PROGRAM_NAME = 'Flashcards Application'
 PROGRAM_DESCRIPTION = 'Interface for Flashcards Application'
@@ -23,13 +19,13 @@ def load_set_from_file(args):
     importer = FlashcardsSetImporter(import_info)
 
     if not importer.check_if_file_exists(): print("File doesn't exist")
-    if not importer.check_if_name_is_valid(): print(f"Name {args.name} is not a valid set name")
+    elif not importer.check_if_name_is_valid(): print(f"Name {args.name} is not a valid set name")
     elif importer.check_if_set_exists(): print(f"Set with given name already exists")
     else:
         try:
             importer.import_set()
             print("Done")
-        except Exception:
+        except ValueError:
             print("File is not properly formatted")
 
 def export_set_to_file(args):
@@ -37,7 +33,7 @@ def export_set_to_file(args):
     exporter = SingleSetExporter(args.set_name, export_info)
 
     if not exporter.check_if_directory_exists(): print("Directory doesn't exist")
-    if not exporter.check_if_set_exists(): print("Set with given name doesn't exist")
+    elif not exporter.check_if_set_exists(): print("Set with given name doesn't exist")
     else:
         exporter.export_set()
         print("Done")

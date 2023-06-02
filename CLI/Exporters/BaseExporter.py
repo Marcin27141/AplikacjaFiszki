@@ -1,9 +1,5 @@
-import os
-import shutil
 from Controllers.FlashcardsSetController import FlashcardsSetController
-from Database.DatabaseManager import DatabaseManager
-from CLI.FileOperator import FileOperator, FileAlias
-from simple_app import get_default_db_manager
+from CLI.FileOperator import FileOperator
 
 class ExportInfo:
     def __init__(self, destination_dir, destination_name, separator) -> None:
@@ -18,7 +14,7 @@ class BaseExporter:
     def __init__(self, export_info) -> None:
         self.controller = FlashcardsSetController()
         self.destination_directory = export_info.destination_dir
-        self.destination_name = export_info.destination_name
+        self.name = export_info.destination_name
         self.separator = export_info.separator if export_info.separator else self.DEFAULT_SEPARATOR
     
     def get_default_set_filename(self, flashcards_set):

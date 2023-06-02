@@ -1,21 +1,19 @@
-import os
 import shutil
 from CLI.Exporters.BaseExporter import BaseExporter
-from Database.DatabaseManager import DatabaseManager
-from CLI.FileOperator import FileOperator, FileAlias
-from simple_app import get_default_db_manager
+from CLI.FileOperator import FileAlias
 from datetime import datetime
 
 class AllSetsExporter(BaseExporter):
     def __init__(self, export_info) -> None:
         super().__init__(export_info)
         self.name = self.name if self.name else self.get_default_archive_name()
+        self.sets_to_export = self.get_all_sets()
 
     def export_sets(self):
         self.export_all_sets_to_archive()
 
     def get_all_sets(self):
-        return self.db_manager.get_all_sets()
+        return self.controller.get_available_sets()
 
     def create_temporary_directory(self):
         TEMP_DIRECTORY = "temp_directory"
@@ -29,13 +27,14 @@ class AllSetsExporter(BaseExporter):
             set_text = self.get_set_to_text(flashcards_set)
             file_alias = FileAlias(temp_directory, filename)
             self.FILE_OPERATOR.write_to_file(file_alias, set_text)
+        return temp_directory
         
     def export_all_sets_to_archive(self):
         DEFAULT_ARCHIVE_FORMAT = 'zip'
-        file_alias = FileAlias(self.destination_directory, self.destination_name)
-        self.destination_name = self.FILE_OPERATOR.get_nonduplicate_filename(file_alias)
+        file_alias = FileAlias(self.destination_directory, self.name)
+        self.name = self.FILE_OPERATOR.get_nonduplicate_filename(file_alias)
         content_directory_for_archive = self.get_content_directory_for_archive()
-        shutil.make_archive(self.destination_name, DEFAULT_ARCHIVE_FORMAT, content_directory_for_archive)
+        shutil.make_archive(self.name, DEFAULT_ARCHIVE_FORMAT, content_directory_for_archive)
         shutil.rmtree(content_directory_for_archive)
 
     def get_default_archive_name(self):

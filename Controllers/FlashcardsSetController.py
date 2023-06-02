@@ -1,8 +1,10 @@
 from Database.DatabaseManager import DatabaseManager
-from simple_app import get_default_db_manager
+from configuration import get_db_manager
 
 class FlashcardsSetController:
-    def __init__(self, db_manager: DatabaseManager = get_default_db_manager()) -> None:
+    SET_ROLE = 100
+
+    def __init__(self, db_manager: DatabaseManager = get_db_manager()) -> None:
         self.db_manager = db_manager
 
     def get_available_sets(self):

@@ -46,8 +46,7 @@ class FlashcardsSetCreatorWidget(QWidget):
         self.setLayout(layout)
 
     def add_flashcard(self):
-        row_count = self.table.rowCount()
-        #self.table.insertRow(row_count)        
+        row_count = self.table.rowCount()   
         self.table.add_row_with_edit(row_count)
 
     def get_flashcards_list(self):

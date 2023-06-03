@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit
+from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QMessageBox
 from PySide6.QtCore import Qt, Signal
 from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
 from View.FlashcardsSets.NameWidget import NameWidget
@@ -83,14 +83,17 @@ class FlashcardsSetEditorWidget(QWidget):
         return flashcards
 
     def remove_set(self):
-        self.controller.remove_set(self.displayed_set)
-        self.RETURN_TO_MENU.emit()
+        question = QMessageBox.question(self, "Delete Set", "Are you sure you want to delete this set?",
+                                              QMessageBox.Yes | QMessageBox.No)
+        if question == QMessageBox.Yes:
+            self.controller.remove_set(self.displayed_set)
+            self.RETURN_TO_MENU.emit()
 
     def process_flashcards(self):
         set_name = self.name_widget.name_line_edit.text()
         if not len(set_name) > 0:
             self.error_label.setText("Name of the set is mandatory")
-        elif not self.controller.is_valid_table_name(set_name):
+        elif not self.controller.is_valid_set_name(set_name):
             self.error_label.setText("This set name is not valid")
         elif set_name != self.displayed_set.name and self.controller.check_if_set_exists(set_name):
             self.error_label.setText("Set with given name already exists")

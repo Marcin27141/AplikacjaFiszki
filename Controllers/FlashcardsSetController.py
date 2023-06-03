@@ -27,4 +27,8 @@ class FlashcardsSetController:
 
     def remove_set(self, set_to_remove):
         if set_to_remove != None:
-            self.db_manager.delete_flashcards_set(set_to_remove.name)
+            self.remove_set_by_name(set_to_remove.name)
+
+    def remove_set_by_name(self, set_name):
+        if set_name != None:
+            self.db_manager.delete_flashcards_set(set_name)

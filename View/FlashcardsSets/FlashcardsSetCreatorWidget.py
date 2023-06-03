@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt, Signal
 from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
 from View.FlashcardsSets.NameWidget import NameWidget
 from Model.Flashcards import Flashcard
-from View.ViewUtilities import set_widget_font_size
+from View.ViewUtilities import set_widget_font_size, make_font_bold
 
 class FlashcardsSetCreatorWidget(QWidget):
     RETURN_TO_MENU = Signal()
@@ -34,6 +34,8 @@ class FlashcardsSetCreatorWidget(QWidget):
 
         self.error_label = QLabel()
         self.error_label.setStyleSheet("color: red;")
+        make_font_bold(self.error_label)
+        self.error_label.setAlignment(Qt.AlignHCenter)
 
         layout = QVBoxLayout()
         layout.addWidget(self.name_widget)
@@ -45,14 +47,15 @@ class FlashcardsSetCreatorWidget(QWidget):
 
     def add_flashcard(self):
         row_count = self.table.rowCount()
-        self.table.insertRow(row_count)        
+        #self.table.insertRow(row_count)        
+        self.table.add_row_with_edit(row_count)
 
     def get_flashcards_list(self):
         flashcards = []
         for row in range(self.table.rowCount()):
             original_item = self.table.item(row, 0)
             translation_item = self.table.item(row, 1)
-            if original_item and translation_item:
+            if self.table.check_if_row_is_filled(row):
                 original_text = original_item.text()
                 translation_text = translation_item.text()
                 flashcards.append(Flashcard(original_text, translation_text))
@@ -62,13 +65,15 @@ class FlashcardsSetCreatorWidget(QWidget):
         set_name = self.name_widget.name_line_edit.text()
         if not len(set_name) > 0:
             self.error_label.setText("Name of the set is mandatory")
-        elif not self.controller.is_valid_table_name(set_name):
+        elif not self.controller.is_valid_set_name(set_name):
             self.error_label.setText("This set name is not valid")
         elif self.controller.check_if_set_exists(set_name):
             self.error_label.setText("Set with given name already exists")
+        elif not self.table.check_if_no_partially_filled_rows():
+            self.error_label.setText("Please fill all non-empty rows")
         else:
             self.controller.create_set(set_name, self.get_flashcards_list())
-            self.returnToMenu.emit()
+            self.RETURN_TO_MENU.emit()
 
     def showEvent(self, event):
         super().showEvent(event)

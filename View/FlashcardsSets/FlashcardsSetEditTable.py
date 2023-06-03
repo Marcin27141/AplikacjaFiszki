@@ -3,9 +3,11 @@ from PySide6.QtCore import Qt, QTimer
 from View.ViewUtilities import set_widget_font_size
 
 class FlashcardSetEditTable(QTableWidget):   
+    COLUMNS_COUNT = 2
+    
     def __init__(self) -> None:
         super().__init__()
-        self.setColumnCount(2)
+        self.setColumnCount(self.COLUMNS_COUNT)
         self.setHorizontalHeaderLabels(["Original", "Translation"])
         self.setRowCount(1)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -26,6 +28,19 @@ class FlashcardSetEditTable(QTableWidget):
     def add_row_with_edit(self, row_idx):
         self.insertRow(row_idx)
         QTimer.singleShot(0, lambda: self.edit_cell(row_idx, 0))
+
+    def check_if_cell_has_value(self, row, column):
+        item = self.item(row, column)
+        return bool(item) and bool(item.text()) 
+    
+    def check_if_row_is_filled(self, row):
+        return all(self.check_if_cell_has_value(row, column) for column in range(self.COLUMNS_COUNT))
+    
+    def check_if_row_is_empty(self, row):
+        return not any(self.check_if_cell_has_value(row, column) for column in range(self.COLUMNS_COUNT))
+    
+    def check_if_no_partially_filled_rows(self):
+        return all(self.check_if_row_is_empty(row) or self.check_if_row_is_filled(row) for row in range(self.rowCount()))
 
     def load_set_for_edit(self, flashcards_set):
         self.clearContents()

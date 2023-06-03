@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QTableWidget, QLineEdit, QTableWidgetItem, QHeaderView, QAbstractItemView
+from PySide6.QtWidgets import QTableWidget, QLineEdit, QTableWidgetItem, QHeaderView, QAbstractItemView, QMessageBox
 from PySide6.QtCore import Qt, QTimer
 from View.ViewUtilities import set_widget_font_size
 
@@ -53,8 +53,19 @@ class FlashcardSetEditTable(QTableWidget):
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
-            current_index = self.currentIndex()
-            current_row = current_index.row()
-            current_column = current_index.column()
-            if current_column == self.columnCount() - 1:
-                self.add_row_with_edit(current_row+1)
+            self.handle_enter_key()
+        elif event.key() == Qt.Key_Delete:
+            self.handle_delete_key()
+
+    def handle_enter_key(self):
+        current_index = self.currentIndex()
+        current_row = current_index.row()
+        current_column = current_index.column()
+        if current_column == self.columnCount() - 1:
+            self.add_row_with_edit(current_row+1)
+
+    def handle_delete_key(self):
+        selected_rows = sorted(set(index.row() for index in self.selectedIndexes()), reverse=True)
+        for row in selected_rows:
+            self.removeRow(row)
+            

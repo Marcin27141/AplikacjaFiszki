@@ -45,7 +45,7 @@ class FlashcardsSetLearnerWidget(QWidget):
         layout.addWidget(self.flashcard_widget)
         layout.addWidget(navigation_buttons)
         layout.addWidget(self.return_button)
-        self.setLayout(layout) 
+        self.setLayout(layout)
 
     def load_set_for_learning(self, flashcards_set):
         self.learn_set = flashcards_set
@@ -74,12 +74,23 @@ class FlashcardsSetLearnerWidget(QWidget):
             self.show_flashcard()
             self.make_sure_buttons_locked_if_needed()
 
-    def showEvent(self, event):
-        super().showEvent(event)
-        self.flashcard_index = 0
-        self.flashcard_widget.setText(self.learn_set.flashcards[self.flashcard_index].original)
-        self.make_sure_buttons_locked_if_needed()
-
     def make_sure_buttons_locked_if_needed(self):
         self.left_button.setEnabled(self.flashcard_index > 0)
         self.rigth_button.setEnabled(self.flashcard_index < len(self.learn_set.flashcards)-1)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Space or event.key() == Qt.Key_Up or event.key() == Qt.Key_Down:
+            self.flip_button.click()
+        elif event.key() == Qt.Key_Left:
+            self.left_button.click()
+        elif event.key() == Qt.Key_Right:
+            self.rigth_button.click()
+        else:
+            super().keyPressEvent(event)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.setFocus()
+        self.flashcard_index = 0
+        self.flashcard_widget.setText(self.learn_set.flashcards[self.flashcard_index].original)
+        self.make_sure_buttons_locked_if_needed()

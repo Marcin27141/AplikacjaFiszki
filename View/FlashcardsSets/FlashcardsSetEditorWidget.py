@@ -9,6 +9,7 @@ class FlashcardsSetEditorWidget(QWidget):
     RETURN_TO_MENU = Signal()
     SHOW_LEARN_VIEW = Signal(object)
     SHOW_TEST_VIEW = Signal(object)
+    SHOW_TIME_TEST_VIEW = Signal(object)
     
     def __init__(self, controller):
         super().__init__()
@@ -20,7 +21,7 @@ class FlashcardsSetEditorWidget(QWidget):
         self.learn_button = QPushButton("Learn")
         self.learn_button.clicked.connect(lambda: self.SHOW_LEARN_VIEW.emit(self.displayed_set))
         self.test_button = QPushButton("Test")
-        self.test_button.clicked.connect(lambda: self.SHOW_TEST_VIEW.emit(self.displayed_set))
+        self.test_button.clicked.connect(lambda: self.test_button_clicked())
 
         activity_buttons = QWidget()
         activity_layout = QHBoxLayout()
@@ -81,7 +82,23 @@ class FlashcardsSetEditorWidget(QWidget):
                 translation_text = translation_item.text()
                 flashcards.append(Flashcard(original_text, translation_text))
         return flashcards
+    
+    def get_test_message_box(self):
+        test_kind_message_box = QMessageBox()
+        test_kind_message_box.setWindowTitle("Choose test kind")
+        test_kind_message_box.setText("What type of test do you want to take?")
+        test_kind_message_box.addButton("Normal test", QMessageBox.ButtonRole.YesRole)
+        test_kind_message_box.addButton("Time test", QMessageBox.ButtonRole.NoRole)    
+        return test_kind_message_box
 
+    def test_button_clicked(self):
+        test_kind_message_box = self.get_test_message_box()
+        clicked_button = test_kind_message_box.exec()
+        if clicked_button == 0:
+            self.SHOW_TEST_VIEW.emit(self.displayed_set)
+        elif clicked_button == 1:
+            self.SHOW_TIME_TEST_VIEW.emit(self.displayed_set)
+        
     def remove_set(self):
         question = QMessageBox.question(self, "Delete Set", "Are you sure you want to delete this set?",
                                               QMessageBox.Yes | QMessageBox.No)

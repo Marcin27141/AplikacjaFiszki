@@ -12,6 +12,7 @@ class TimeTesterSwitch(QWidget):
         
         self.test_widget = TimeTestWidget()
         self.test_widget.SHOW_TEST_SUMMARY_VIEW.connect(self.show_test_summary)
+        self.test_widget.RETURN_TO_MENU.connect(self.RETURN_TO_MENU.emit)
 
         self.result_widget = BasicResultWidget()
         self.result_widget.RETURN_TO_MENU.connect(self.RETURN_TO_MENU.emit)

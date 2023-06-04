@@ -8,6 +8,7 @@ class TimeTestWidget(QWidget):
     RESULT_DISPLAY_TIME = 2
     NUM_OF_POSSIBILITIES = 4
     TIME_FOR_ANSWER = 5
+    RETURN_TO_MENU = Signal()
     SHOW_TEST_SUMMARY_VIEW = Signal()
 
     def __init__(self) -> None:
@@ -33,11 +34,20 @@ class TimeTestWidget(QWidget):
         self.response_widget = QWidget()
         self.response_widget.setLayout(grid_layout)
 
+        self.return_button = QPushButton("Return")
+        self.return_button.clicked.connect(self.go_back_to_menu)
+        set_widget_font_size(self.return_button, 20)
+
         test_layout = QVBoxLayout()
         test_layout.addWidget(self.timer_widget)
         test_layout.addWidget(self.original_label)
         test_layout.addWidget(self.response_widget)
+        test_layout.addWidget(self.return_button)
         self.setLayout(test_layout)
+
+    def go_back_to_menu(self):
+        self.timer_widget.stop()
+        self.RETURN_TO_MENU.emit()
 
     def load_flashcards_for_learning(self, flashcards_set):
         self.flashcards = flashcards_set.flashcards

@@ -9,6 +9,7 @@ class IncorrectAnswer:
 
 class BasicTestWidget(QWidget):
     RESULT_DISPLAY_TIME = 1
+    RETURN_TO_MENU = Signal()
     SHOW_TEST_SUMMARY_VIEW = Signal()
     DISPLAY_INCORRECT_ANSWER = Signal(object)
 
@@ -25,15 +26,21 @@ class BasicTestWidget(QWidget):
         
         self.submit_button = QPushButton("Submit")
         self.submit_button.clicked.connect(self.check_answer)
+        set_widget_font_size(self.submit_button, 15)
 
         self.result_label = QLabel()
         self.initialize_result_label()
+
+        self.return_button = QPushButton("Return")
+        self.return_button.clicked.connect(lambda: self.RETURN_TO_MENU.emit())
+        set_widget_font_size(self.return_button, 20)
 
         test_layout = QVBoxLayout()
         test_layout.addWidget(self.original_label)
         test_layout.addWidget(self.translation_text)
         test_layout.addWidget(self.submit_button)
         test_layout.addWidget(self.result_label)
+        test_layout.addWidget(self.return_button)
         self.setLayout(test_layout)
 
     def load_flashcards_for_learning(self, flashcards_set):

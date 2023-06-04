@@ -1,23 +1,12 @@
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QVBoxLayout, QPushButton, QLabel, QTextEdit
-from View.BasicTester.BasicFlashcardTester import BasicFlashcardTester
-from View.StatsTester.StatsFlashcardTester import StatsFlashcardTester
-from Controllers.FlashcardsSetController import FlashcardsSetController
+from PySide6.QtWidgets import QVBoxLayout
+import Controllers.FlashcardsSetController as flashcards_controllers
 from View.FlashcardsSets.FlashcardsSetSwitchWidget import FlashcardsSetSwitchWidget
 
 class ApplicationLayout(QVBoxLayout):
     def __init__(self, db_manager):
         super().__init__()
 
-        """#test_controller = TestingController()
-        #self.tester = BasicFlashcardTester(test_controller, flashcards)
-        test_controller = StatsTestingController()
-        self.tester = StatsFlashcardTester(test_controller, flashcards)
-
-        test_controller.set_test_widget(self.tester)
-        self.addWidget(self.tester)"""
-
-        sets_controller = FlashcardsSetController(db_manager)
+        sets_controller = flashcards_controllers.FlashcardsSetController()
         self.flashcards_set_widget = FlashcardsSetSwitchWidget(sets_controller)
 
         self.addWidget(self.flashcards_set_widget)

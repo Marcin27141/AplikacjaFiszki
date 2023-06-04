@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit
+from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtCore import Qt, QAbstractAnimation, QVariantAnimation, QEasingCurve
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsWidget, QGraphicsOpacityEffect
@@ -24,12 +24,15 @@ class FlashcardsSetLearnerWidget(QWidget):
 
         self.left_button = QPushButton("<-")
         self.left_button.clicked.connect(lambda: self.show_previous_flashcard())
+        set_widget_font_size(self.left_button, 15)
 
         self.flip_button = QPushButton("Flip")
         self.flip_button.clicked.connect(lambda: self.show_other_flashcard_side())
+        set_widget_font_size(self.flip_button, 15)
 
         self.rigth_button = QPushButton("->")
         self.rigth_button.clicked.connect(lambda: self.show_next_flashcard())
+        set_widget_font_size(self.rigth_button, 15)
 
         navigation_buttons = QWidget()
         navigation_layout = QHBoxLayout()
@@ -40,6 +43,7 @@ class FlashcardsSetLearnerWidget(QWidget):
 
         self.return_button = QPushButton("Return")
         self.return_button.clicked.connect(lambda: self.RETURN_TO_MENU.emit())
+        set_widget_font_size(self.return_button, 20)
 
         layout = QVBoxLayout()
         layout.addWidget(self.flashcard_widget)

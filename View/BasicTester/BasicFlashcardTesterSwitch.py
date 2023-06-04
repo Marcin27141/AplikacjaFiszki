@@ -14,6 +14,7 @@ class BasicFlashcardTesterSwitch(QWidget):
         self.test_widget = test_widget
         self.test_widget.DISPLAY_INCORRECT_ANSWER.connect(lambda incorrect_answer: self.show_incorrect_answer(incorrect_answer))
         self.test_widget.SHOW_TEST_SUMMARY_VIEW.connect(self.show_test_summary)
+        self.test_widget.RETURN_TO_MENU.connect(self.RETURN_TO_MENU.emit)
 
         self.mistake_widget = mistake_widget
         self.mistake_widget.GO_BACK_TO_TESTING.connect(self.go_back_to_testing)

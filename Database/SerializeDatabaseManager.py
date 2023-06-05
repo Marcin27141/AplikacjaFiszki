@@ -39,3 +39,10 @@ class SerializeDatabaseManager(GeneralDatabaseManager):
         cursor.execute(f"INSERT INTO {self.SERIALIZED_TESTS_TABLE} (set_name, serialized) VALUES (?, ?)", (set_name, serialized))
         conn.commit()
         conn.close()
+
+    def delete_serialized_test(self, set_name):
+        conn, cursor = self.get_database_connection_and_cursor()
+        query = f"DELETE FROM {self.SERIALIZED_TESTS_TABLE} WHERE set_name = ?"
+        cursor.execute(query, (set_name, ))
+        conn.commit()
+        conn.close()

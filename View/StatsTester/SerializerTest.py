@@ -8,7 +8,7 @@ class SerializerTest(StatsTestWidget):
         self.serialize_controller = serialize_controller
 
     def return_to_menu(self):
-        if self.original_flashcards == self.flashcards and len(self.flashcards_incorrect) > 0:
+        if self.original_flashcards != self.flashcards or self.flashcard_index > 0:
             self.serialize_controller.serialize_test(self.flashcards_set.name, self)
         self.RETURN_TO_MENU.emit()
 

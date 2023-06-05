@@ -10,7 +10,7 @@ class SerializationSetEditorWidget(FlashcardsSetEditorWidget):
         self.serialize_controller = serialize_controller
 
     def get_serialized_test_message_box(self):
-        return QMessageBox.question(self, "Load test", "There is a not finished test for this set.\nDo you want to continue?",
+        return QMessageBox.question(self, "Load test", "There is an unfinished test for this set.\nDo you want to continue?",
                                               QMessageBox.Yes | QMessageBox.No)
 
     def switch_to_test_widget(self):
@@ -21,7 +21,11 @@ class SerializationSetEditorWidget(FlashcardsSetEditorWidget):
                 self.LOAD_SERIALIZED_TEST.emit(serialized_test)
             elif serialized_test_box == QMessageBox.No:
                 super().switch_to_test_widget()
+            self.delete_serialized_test()
         else: super().switch_to_test_widget()
 
     def get_serialized_test(self):
         return self.serialize_controller.get_serialized_test(self.displayed_set.name)
+    
+    def delete_serialized_test(self):
+        self.serialize_controller.delete_serialized_test(self.displayed_set.name)

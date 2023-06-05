@@ -3,7 +3,6 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtCore import Qt, QAbstractAnimation, QVariantAnimation, QEasingCurve
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsWidget, QGraphicsOpacityEffect
 from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
-from View.FlashcardsSets.AnimationFlashcard import AnimationFlashcard
 from View.FlashcardsSets.NameWidget import NameWidget
 from Model.Flashcards import Flashcard
 from View.ViewUtilities import set_widget_font_size

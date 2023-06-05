@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt, QEvent, Signal
-from PySide6.QtWidgets import QVBoxLayout, QPushButton, QLabel, QWidget
-from View.ViewUtilities import set_widget_font_size
+from PySide6.QtWidgets import QVBoxLayout, QPushButton, QLabel, QWidget, QSizePolicy
+from View.ViewUtilities import set_widget_font_size, make_font_bold
 
 class BasicIncorrectWidget(QWidget):
     GO_BACK_TO_TESTING = Signal()
@@ -11,53 +11,39 @@ class BasicIncorrectWidget(QWidget):
         self.initialize_incorrect_label()
 
         self.original_label = QLabel()
-        set_widget_font_size(self.incorrect_label, 15)
-
         self.given_answer_label = QLabel()
-        set_widget_font_size(self.incorrect_label, 15)
-
         self.translation_label = QLabel()
-        set_widget_font_size(self.incorrect_label, 15)
 
         self.button = QPushButton("Got it!")
-        self.button.clicked.connect(self.GO_BACK_TO_TESTING.emit)
-        #self.installEventFilter(self)
+        self.initialize_button()
 
         widget_layout = QVBoxLayout()
         widget_layout.addWidget(self.incorrect_label)
         widget_layout.addWidget(self.original_label)
         widget_layout.addWidget(self.given_answer_label)
         widget_layout.addWidget(self.translation_label)
+        widget_layout.addSpacing(50)
         widget_layout.addWidget(self.button)
         self.setLayout(widget_layout)
-        #self.setFocusPolicy(Qt.StrongFocus)
+    
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+            self.button.click()
 
-    """def keyPressEvent(self, event):
-        if self.isEnabled() and self.isHidden() == False:
-            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
-                self.button.click()"""
-
-    """def showEvent(self, event):
-        self.setFocus()
-        super().showEvent(event)
-
-    def focusInEvent(self, event):
-        self.setFocus()
-        super().focusInEvent(event)"""
-
-    """def eventFilter(self, obj, event):
-        if event.type() == QEvent.KeyPress:
-            if event.key() == Qt.Key_Return:
-                self.button.click()
-                return True
-        return False"""
+    def initialize_button(self):
+        self.button.clicked.connect(self.GO_BACK_TO_TESTING.emit)
+        set_widget_font_size(self.button, 20)
 
     def initialize_incorrect_label(self):
-        set_widget_font_size(self.incorrect_label, 20)
+        set_widget_font_size(self.incorrect_label, 35)
+        make_font_bold(self.incorrect_label)
         self.incorrect_label.setAlignment(Qt.AlignHCenter)
         self.incorrect_label.setStyleSheet("color: red;")
 
     def present_incorrect_answer(self, incorrect_answer):
         self.original_label.setText("Tested word: " + incorrect_answer.flashcard.original)
+        set_widget_font_size(self.original_label, 18)
         self.given_answer_label.setText("Your answer: " + incorrect_answer.given_answer)
-        self.translation_label.setText("Correct translation: " + incorrect_answer.flashcard.translation)     
+        set_widget_font_size(self.given_answer_label, 18)
+        self.translation_label.setText("Correct translation: " + incorrect_answer.flashcard.translation)  
+        set_widget_font_size(self.translation_label, 18)

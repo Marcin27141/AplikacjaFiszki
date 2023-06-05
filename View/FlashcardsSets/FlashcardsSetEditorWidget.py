@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBox
 from PySide6.QtCore import Qt, Signal
 from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
 from View.FlashcardsSets.NameWidget import NameWidget
+from View.TimeTester.TimeTestWidget import TimeTestWidget
 from Model.Flashcards import Flashcard
 from View.ViewUtilities import set_widget_font_size
 
@@ -84,21 +85,35 @@ class FlashcardsSetEditorWidget(QWidget):
         return flashcards
     
     def get_test_message_box(self):
-        test_kind_message_box = QMessageBox()
+        test_kind_message_box = QMessageBox(self)
         test_kind_message_box.setWindowTitle("Choose test kind")
         test_kind_message_box.setText("What type of test do you want to take?")
         test_kind_message_box.addButton("Normal test", QMessageBox.ButtonRole.YesRole)
         test_kind_message_box.addButton("Time test", QMessageBox.ButtonRole.NoRole)    
         return test_kind_message_box
+    
+    def get_time_test_unavailable_message_box(self):
+        time_test_unavailable_message_box = QMessageBox(self)
+        time_test_unavailable_message_box.setWindowTitle("Time test unavailable")
+        time_test_unavailable_message_box.setText(f"Time test is unavailable for this set.\nMinimum number of flashcards in a set is {TimeTestWidget.NUM_OF_POSSIBILITIES}")
+        time_test_unavailable_message_box.setStandardButtons(QMessageBox.Ok)
+        return time_test_unavailable_message_box
 
     def test_button_clicked(self):
+        def set_is_eligible_for_time_test(flashcards_set):
+            return len(flashcards_set.flashcards) >= TimeTestWidget.NUM_OF_POSSIBILITIES
         test_kind_message_box = self.get_test_message_box()
         clicked_button = test_kind_message_box.exec()
-        if clicked_button == 0:
+        NORMAL_TEST_CHOSEN = 0
+        TIME_TEST_CHOSEN = 1
+        if clicked_button == NORMAL_TEST_CHOSEN:
             self.SHOW_TEST_VIEW.emit(self.displayed_set)
-        elif clicked_button == 1:
+        elif clicked_button == TIME_TEST_CHOSEN and set_is_eligible_for_time_test(self.displayed_set):
             self.SHOW_TIME_TEST_VIEW.emit(self.displayed_set)
-        
+        elif clicked_button == TIME_TEST_CHOSEN:
+            time_test_information_box = self.get_time_test_unavailable_message_box()
+            time_test_information_box.exec()
+
     def remove_set(self):
         question = QMessageBox.question(self, "Delete Set", "Are you sure you want to delete this set?",
                                               QMessageBox.Yes | QMessageBox.No)

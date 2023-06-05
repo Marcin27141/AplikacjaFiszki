@@ -1,5 +1,5 @@
 from Controllers.FlashcardsSetController import FlashcardsSetController
-from Model.Flashcards import Flashcard
+from Model.Flashcards import StatsFlashcard
 from CLI.FileOperator import FileOperator
 
 class WrongFileFormatException(Exception):
@@ -47,7 +47,7 @@ class FlashcardsSetImporter:
             
     def convert_line_to_flashcard(self, line):
         (original, translation) = line.split(self.separator)
-        return Flashcard(original.strip(), translation.strip())
+        return StatsFlashcard(original.strip(), translation.strip())
     
     def create_set(self, flashcards):
         self.controller.create_set(self.set_name, flashcards)

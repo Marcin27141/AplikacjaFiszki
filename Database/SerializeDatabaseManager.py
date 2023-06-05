@@ -1,6 +1,4 @@
 import sqlite3
-from Model.Flashcards import Flashcard
-from Model.FlashcardsSet import FlashcardsSet
 from Database.GeneralDatabaseManager import GeneralDatabaseManager
 
 class SerializeDatabaseManager(GeneralDatabaseManager):

@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt, Signal
 from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
 from View.FlashcardsSets.NameWidget import NameWidget
 from View.TimeTester.TimeTestWidget import TimeTestWidget
-from Model.Flashcards import Flashcard
+from Model.Flashcards import StatsFlashcard
 from View.ViewUtilities import set_widget_font_size
 
 class FlashcardsSetEditorWidget(QWidget):
@@ -81,7 +81,7 @@ class FlashcardsSetEditorWidget(QWidget):
             if original_item and translation_item:
                 original_text = original_item.text()
                 translation_text = translation_item.text()
-                flashcards.append(Flashcard(original_text, translation_text))
+                flashcards.append(StatsFlashcard(original_text, translation_text))
         return flashcards
     
     def get_test_message_box(self):

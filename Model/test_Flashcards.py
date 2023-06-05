@@ -47,29 +47,29 @@ def test_flashcard_edit():
 
 def test_initial_stats():
     test_stat_flashcard = StatsFlashcard(TEST_ORIGINAL, TEST_TRANSLATION)
-    assert test_stat_flashcard.last_time_tested == None
-    assert test_stat_flashcard.times_right == 0
-    assert test_stat_flashcard.times_wrong == 0
+    assert test_stat_flashcard.last_tested == None
+    assert test_stat_flashcard.times_correct == 0
+    assert test_stat_flashcard.times_incorrect == 0
 
 def test_stats_wrong_increment():
     test_stat_flashcard = StatsFlashcard(TEST_ORIGINAL, TEST_TRANSLATION)
     test_stat_flashcard.test_answer(TEST_TRANSLATION + "wrong answer")
-    assert test_stat_flashcard.times_wrong == 1
-    assert test_stat_flashcard.times_right == 0
+    assert test_stat_flashcard.times_incorrect == 1
+    assert test_stat_flashcard.times_correct == 0
 
 def test_stats_right_increment():
     test_stat_flashcard = StatsFlashcard(TEST_ORIGINAL, TEST_TRANSLATION)
     test_stat_flashcard.test_answer(TEST_TRANSLATION)
-    assert test_stat_flashcard.times_wrong == 0
-    assert test_stat_flashcard.times_right == 1
+    assert test_stat_flashcard.times_incorrect == 0
+    assert test_stat_flashcard.times_correct == 1
 
 def test_stats_date_update():
     TIME_SLEEP = 1
     test_stat_flashcard = StatsFlashcard(TEST_ORIGINAL, TEST_TRANSLATION)
     test_stat_flashcard.test_answer(TEST_TRANSLATION)
-    first_check = test_stat_flashcard.last_time_tested
+    first_check = test_stat_flashcard.last_tested
     assert first_check != None
     time.sleep(TIME_SLEEP)
     test_stat_flashcard.test_answer(TEST_TRANSLATION + "wrong answer")
-    second_check = test_stat_flashcard.last_time_tested
+    second_check = test_stat_flashcard.last_tested
     assert second_check != None and second_check != first_check

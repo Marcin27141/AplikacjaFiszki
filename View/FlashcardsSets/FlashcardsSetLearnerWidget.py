@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt, QAbstractAnimation, QVariantAnimation, QEasingCur
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsWidget, QGraphicsOpacityEffect
 from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
 from View.FlashcardsSets.NameWidget import NameWidget
-from Model.Flashcards import Flashcard
+from Model.Flashcards import StatsFlashcard
 from View.ViewUtilities import set_widget_font_size
 
 class FlashcardsSetLearnerWidget(QWidget):

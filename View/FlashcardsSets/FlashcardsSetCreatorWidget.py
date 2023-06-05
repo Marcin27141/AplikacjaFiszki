@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBox
 from PySide6.QtCore import Qt, Signal
 from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
 from View.FlashcardsSets.NameWidget import NameWidget
-from Model.Flashcards import Flashcard
+from Model.Flashcards import StatsFlashcard
 from View.ViewUtilities import set_widget_font_size, make_font_bold
 
 class FlashcardsSetCreatorWidget(QWidget):
@@ -57,7 +57,7 @@ class FlashcardsSetCreatorWidget(QWidget):
             if self.table.check_if_row_is_filled(row):
                 original_text = original_item.text()
                 translation_text = translation_item.text()
-                flashcards.append(Flashcard(original_text, translation_text))
+                flashcards.append(StatsFlashcard(original_text, translation_text))
         return flashcards
 
     def process_flashcards(self):

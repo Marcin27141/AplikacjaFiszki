@@ -25,28 +25,29 @@ class Flashcard:
         self.edit_translation(new_translation)
 
 class StatsFlashcard(Flashcard):
-    def __init__(self, original, translation) -> None:
+    def __init__(self, original, translation, times_correct=0, times_inorrect=0, last_tested=None) -> None:
         super().__init__(original, translation)
-        self.times_right = 0
-        self.times_wrong = 0
-        self.last_time_tested = None
+        self.times_correct = times_correct
+        self.times_incorrect = times_inorrect
+        self.last_tested = last_tested
 
     def __getstate__(self):
         state = super().__getstate__()
-        state.update({
-            'stats_flashcard': (self.times_right, self.times_wrong, self.last_time_tested)
-        })
-        return state
+        state_dict = {
+            'flashcard': state,
+            'stats_flashcard': (self.times_correct, self.times_incorrect, self.last_tested)
+        }
+        return state_dict
 
     def __setstate__(self, state):
-        super().__setstate__(state)
-        self.time_right, self.times_wrong, self.last_time_tested = state['stats_flashcard']
-        
+        super().__setstate__(state['flashcard'])
+        self.time_right, self.times_incorrect, self.last_tested = state['stats_flashcard']
+
     def test_answer(self, answer):
         is_correct = super().test_answer(answer)
-        self.last_time_tested = datetime.now()
+        self.last_tested = datetime.now()
         if is_correct:
-            self.times_right += 1
+            self.times_correct += 1
         else:
-            self.times_wrong += 1
+            self.times_incorrect += 1
         return is_correct        

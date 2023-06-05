@@ -1,6 +1,4 @@
 import sqlite3
-from Model.Flashcards import Flashcard
-from Model.FlashcardsSet import FlashcardsSet
 
 class GeneralDatabaseManager:
     def __init__(self, db_name) -> None:
@@ -20,12 +18,6 @@ class GeneralDatabaseManager:
             if not (char.isalnum() or char in valid_chars):
                 return False
         return True
-
-    def check_if_table_exists(self, table_name):
-        conn, cursor = self.get_database_connection_and_cursor()
-        result = self.check_if_table_exists(table_name, cursor)
-        conn.close()
-        return result
 
     def check_if_table_exists(self, table_name, cursor):
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (table_name,))

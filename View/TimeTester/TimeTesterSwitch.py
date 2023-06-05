@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QWidget, QStackedLayout, QWidget
 from PySide6.QtCore import Qt, Signal
+from Controllers.FlashcardsSetController import FlashcardsSetController
 from View.TimeTester.TimeTestWidget import TimeTestWidget
 from View.TimeTester.TimeTestStatsWidget import TimeTestStatsWidget
 from View.StatsTester.StatsResultWidget import BasicStatsResultWidget
@@ -12,7 +13,8 @@ class TimeTesterSwitch(QWidget):
         super().__init__()
         
         #self.test_widget = TimeTestWidget()
-        self.test_widget = TimeTestStatsWidget()
+        controller = FlashcardsSetController()
+        self.test_widget = TimeTestStatsWidget(controller)
         self.test_widget.SHOW_TEST_SUMMARY_VIEW.connect(self.show_test_summary)
         self.test_widget.RETURN_TO_MENU.connect(self.RETURN_TO_MENU.emit)
 

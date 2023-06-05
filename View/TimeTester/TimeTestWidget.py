@@ -50,6 +50,7 @@ class TimeTestWidget(QWidget):
         self.RETURN_TO_MENU.emit()
 
     def load_flashcards_for_learning(self, flashcards_set):
+        self.flashcards_set = flashcards_set
         self.flashcards = flashcards_set.flashcards
         self.initialize_flashcard_label()
         self.load_answer_buttons()

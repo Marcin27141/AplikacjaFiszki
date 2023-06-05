@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QWidget, QStackedLayout, QWidget
 from PySide6.QtCore import Qt, Signal
 from Controllers.SerializeController import SerializeController
+from Controllers.FlashcardsSetController import FlashcardsSetController
 from View.BasicTester.BasicFlashcardTesterSwitch import BasicFlashcardTesterSwitch
 from View.StatsTester.StatsResultWidget import StatsResultWidget
 from View.StatsTester.StatsIncorrectWidget import StatsIncorrectWidget
@@ -13,8 +14,9 @@ class StatsFlashcardTester(BasicFlashcardTesterSwitch):
 
     def __init__(self) -> None:
         #test_widget = StatsTestWidget()
+        flashcards_controller = FlashcardsSetController()
         serialize_controller = SerializeController()
-        test_widget = SerializerTest(serialize_controller)
+        test_widget = SerializerTest(flashcards_controller, serialize_controller)
         mistake_widget = StatsIncorrectWidget()
         result_widget = StatsResultWidget()
         result_widget.CONTINUE_THE_TEST.connect(lambda incorrect: self.continue_the_test(incorrect))

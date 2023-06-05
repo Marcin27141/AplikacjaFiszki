@@ -8,6 +8,7 @@ from View.ViewUtilities import set_widget_font_size
 
 class FlashcardsSetEditorWidget(QWidget):
     RETURN_TO_MENU = Signal()
+    SHOW_STATS_VIEW = Signal(object)
     SHOW_LEARN_VIEW = Signal(object)
     SHOW_TEST_VIEW = Signal(object)
     SHOW_TIME_TEST_VIEW = Signal(object)
@@ -19,6 +20,8 @@ class FlashcardsSetEditorWidget(QWidget):
         self.name_widget = NameWidget()
         set_widget_font_size(self.name_widget, 15)
 
+        self.stats_button = QPushButton("Stats")
+        self.stats_button.clicked.connect(lambda: self.SHOW_STATS_VIEW.emit(self.displayed_set))
         self.learn_button = QPushButton("Learn")
         self.learn_button.clicked.connect(lambda: self.SHOW_LEARN_VIEW.emit(self.displayed_set))
         self.test_button = QPushButton("Test")
@@ -26,6 +29,7 @@ class FlashcardsSetEditorWidget(QWidget):
 
         activity_buttons = QWidget()
         activity_layout = QHBoxLayout()
+        activity_layout.addWidget(self.stats_button)
         activity_layout.addWidget(self.learn_button)
         activity_layout.addWidget(self.test_button)
         activity_buttons.setLayout(activity_layout)

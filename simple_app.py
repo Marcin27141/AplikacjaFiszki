@@ -31,5 +31,7 @@ db_manager = get_db_manager()
 start_view = StartView(db_manager)
 start_view.show()
 
+
+
 #all_sets = db_manager.get_all_sets()
 #print(all_sets)

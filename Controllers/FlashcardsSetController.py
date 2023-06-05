@@ -17,7 +17,10 @@ class FlashcardsSetController:
         self.db_manager.create_new_flashcards_set(new_set_name, flashcards)
 
     def save_set(self, old_set_name, new_set_name, flashcards):
-        self.db_manager.save_set(old_set_name, new_set_name, flashcards)    
+        self.db_manager.save_set(old_set_name, new_set_name, flashcards)
+
+    def update_set_statistics(self, flashcards_set):
+        self.db_manager.save_set(flashcards_set.name, flashcards_set.name, flashcards_set.flashcards)
 
     def is_valid_set_name(self, set_name):
         return self.db_manager.is_valid_table_name(set_name)

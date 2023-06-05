@@ -5,8 +5,9 @@ from View.StatsTester.StatsTestWidget import TestResults
 class TimeTestStatsWidget(TimeTestWidget):
     SHOW_TEST_SUMMARY_VIEW = Signal(object)
 
-    def __init__(self) -> None:
+    def __init__(self, controller) -> None:
         super().__init__()
+        self.controller = controller
         self.original_flashcards = []
         self.flashcards_correct = []
         self.flashcards_incorrect = []
@@ -29,6 +30,7 @@ class TimeTestStatsWidget(TimeTestWidget):
         return super().answer_not_given()
 
     def show_test_summary(self):
+        self.controller.update_set_statistics(self.flashcards_set)
         self.SHOW_TEST_SUMMARY_VIEW.emit(TestResults(
             self.flashcards,
             self.flashcards_correct,
@@ -37,6 +39,10 @@ class TimeTestStatsWidget(TimeTestWidget):
 
     def set_flashcards(self, new_flashcards):
         self.flashcards = new_flashcards
+
+    def go_back_to_menu(self):
+        self.controller.update_set_statistics(self.flashcards_set)
+        return super().go_back_to_menu()
 
     def reset(self, strong = False):
         if strong: self.flashcards = self.original_flashcards

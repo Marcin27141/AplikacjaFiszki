@@ -9,8 +9,9 @@ class TestResults:
 class StatsTestWidget(BasicTestWidget):
     SHOW_TEST_SUMMARY_VIEW = Signal(object)
 
-    def __init__(self) -> None:
+    def __init__(self, controller) -> None:
         super().__init__()
+        self.controller = controller
         self.original_flashcards = []
         self.flashcards_correct = []
         self.flashcards_incorrect = []
@@ -40,6 +41,7 @@ class StatsTestWidget(BasicTestWidget):
             self.flashcards_incorrect.append(self.get_current_flashcard())
 
     def show_test_summary(self):
+        self.controller.update_set_statistics(self.flashcards_set)
         self.SHOW_TEST_SUMMARY_VIEW.emit(TestResults(
             self.flashcards,
             self.flashcards_correct,
@@ -48,6 +50,10 @@ class StatsTestWidget(BasicTestWidget):
 
     def set_flashcards(self, new_flashcards):
         self.flashcards = new_flashcards
+
+    def return_to_menu(self):
+        self.controller.update_set_statistics(self.flashcards_set)
+        self.RETURN_TO_MENU.emit()
 
     def reset(self, strong = False):
         if strong: self.flashcards = self.original_flashcards

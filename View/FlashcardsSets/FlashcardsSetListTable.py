@@ -5,13 +5,13 @@ from View.ViewUtilities import set_widget_font_size
 
 class FlashcardsSetListTable(QTableWidget):     
     SHOW_SET_DETAILS_VIEW = Signal(object)
+    COLUMNS_COUNT = 1
 
     def __init__(self, controller) -> None:
         super().__init__()
         self.controller = controller
-        self.setColumnCount(1)
+        self.setColumnCount(self.COLUMNS_COUNT)
         self.setHorizontalHeaderLabels(["Created sets"])
-        
         available_sets = controller.get_available_sets()
         self.populate_table(available_sets)
         self.itemClicked.connect(self.show_set_details)

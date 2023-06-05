@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QMessageBox
+from PySide6.QtWidgets import QWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QMessageBox
 from PySide6.QtCore import Qt, Signal
 from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
 from View.FlashcardsSets.NameWidget import NameWidget
@@ -138,11 +138,4 @@ class FlashcardsSetEditorWidget(QWidget):
             self.error_label.setText("Set with given name already exists")
         else:
             self.controller.save_set(self.displayed_set.name, set_name, self.get_flashcards_list())
-            self.RETURN_TO_MENU.emit()   
-
-    def showEvent(self, event):
-        super().showEvent(event)
-        self.name_widget.name_line_edit.clear()
-        self.table.clearContents()
-        self.table.setRowCount(1)
-        self.error_label.clear()
+            self.RETURN_TO_MENU.emit()

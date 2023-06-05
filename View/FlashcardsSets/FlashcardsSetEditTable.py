@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QTableWidget, QLineEdit, QTableWidgetItem, QHeaderView, QAbstractItemView, QMessageBox
+from PySide6.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView
 from PySide6.QtCore import Qt, QTimer
 from View.ViewUtilities import set_widget_font_size
 

@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout , QWidget, QLabel, QLineEdit, QPushButton, QSizePolicy
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout , QWidget, QLabel, QPushButton, QSizePolicy
 from PySide6.QtCore import Qt, QTimer, Signal
 from View.TimeTester.TimerWidget import TimerWidget
 from View.ViewUtilities import set_widget_font_size

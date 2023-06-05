@@ -1,5 +1,3 @@
-from PySide6.QtWidgets import QWidget, QStackedLayout, QWidget
-from PySide6.QtCore import Qt, Signal
 from View.BasicTester.BasicFlashcardTesterSwitch import BasicFlashcardTesterSwitch
 from View.BasicTester.BasicIncorrectWidget import BasicIncorrectWidget
 from View.BasicTester.BasicResultWidget import BasicResultWidget

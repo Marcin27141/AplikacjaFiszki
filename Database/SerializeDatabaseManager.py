@@ -1,4 +1,3 @@
-import sqlite3
 from Database.GeneralDatabaseManager import GeneralDatabaseManager
 
 class SerializeDatabaseManager(GeneralDatabaseManager):

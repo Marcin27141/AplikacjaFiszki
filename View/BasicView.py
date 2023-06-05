@@ -3,9 +3,9 @@ from View.BasicWindow import AppMainWindow
 import sys
 
 class StartView:
-    def __init__(self, db_manager):
+    def __init__(self):
         self.app = QApplication(sys.argv)
-        self.window = AppMainWindow(db_manager)
+        self.window = AppMainWindow()
     
     def show(self):
         self.window.show()

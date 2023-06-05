@@ -1,9 +1,6 @@
-from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit, QMessageBox
-from PySide6.QtCore import Qt, Signal, QObject
+from PySide6.QtWidgets import QWidget, QWidget, QPushButton, QVBoxLayout
+from PySide6.QtCore import Qt, Signal
 from View.FlashcardsSets.FlashcardsSetListTable import FlashcardsSetListTable
-from View.FlashcardsSets.NameWidget import NameWidget
-from Model.Flashcards import StatsFlashcard
-from View.ViewUtilities import set_widget_font_size
 
 class FlashcardsSetViewerWidget(QWidget):
     SHOW_CREATE_SET_VIEW = Signal()

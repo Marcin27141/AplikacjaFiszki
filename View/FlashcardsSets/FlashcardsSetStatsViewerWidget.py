@@ -1,11 +1,7 @@
-from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QMessageBox
+from PySide6.QtWidgets import QWidget, QWidget, QPushButton, QVBoxLayout
 from View.FlashcardsSets.FlashcardsSetStatsTable import FlashcardSetStatsTable
 from PySide6.QtCore import Qt, Signal
-from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
 from View.FlashcardsSets.FlashcardsSetStatsTable import FlashcardSetStatsTable
-from View.TimeTester.TimeTestWidget import TimeTestWidget
-from Model.Flashcards import StatsFlashcard
-from View.ViewUtilities import set_widget_font_size
 
 class FlashcardsSetStatsViewerWidget(QWidget):
     RETURN_TO_MENU = Signal()
@@ -26,8 +22,8 @@ class FlashcardsSetStatsViewerWidget(QWidget):
     def load_set_for_stats(self, flashcards_set):
         self.table_widget.load_set_for_viewing(flashcards_set)
 
-    def showEvent(self, event):
+    """def showEvent(self, event):
         self.setFocus()
         super().showEvent(event)
         self.table_widget.clearContents()
-        self.table_widget.setRowCount(1)
+        self.table_widget.setRowCount(1)"""

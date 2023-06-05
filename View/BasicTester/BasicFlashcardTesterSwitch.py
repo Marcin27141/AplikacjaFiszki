@@ -1,11 +1,7 @@
 from PySide6.QtWidgets import QWidget, QStackedLayout, QWidget
 from PySide6.QtCore import Qt, Signal
-from View.BasicTester.BasicIncorrectWidget import BasicIncorrectWidget
-from View.BasicTester.BasicResultWidget import BasicResultWidget
-from View.BasicTester.BasicTestWidget import BasicTestWidget
 
 class BasicFlashcardTesterSwitch(QWidget):
-    #RESULT_DISPLAY_TIME = 1
     RETURN_TO_MENU = Signal()
 
     def __init__(self, test_widget, mistake_widget, result_widget) -> None:

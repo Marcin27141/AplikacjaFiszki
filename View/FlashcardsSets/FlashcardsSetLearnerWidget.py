@@ -1,10 +1,5 @@
-from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy
+from PySide6.QtWidgets import QWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtCore import Qt, QAbstractAnimation, QVariantAnimation, QEasingCurve
-from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsWidget, QGraphicsOpacityEffect
-from View.FlashcardsSets.FlashcardsSetEditTable import FlashcardSetEditTable
-from View.FlashcardsSets.NameWidget import NameWidget
-from Model.Flashcards import StatsFlashcard
 from View.ViewUtilities import set_widget_font_size
 
 class FlashcardsSetLearnerWidget(QWidget):
@@ -54,6 +49,7 @@ class FlashcardsSetLearnerWidget(QWidget):
         self.learn_set = flashcards_set
         self.flashcard_index = 0
         self.flashcard_widget.setText(self.learn_set.flashcards[self.flashcard_index].original)
+        self.make_sure_buttons_locked_if_needed()
 
     def show_flashcard(self):
         if self.showing_translation:
@@ -94,6 +90,3 @@ class FlashcardsSetLearnerWidget(QWidget):
     def showEvent(self, event):
         super().showEvent(event)
         self.setFocus()
-        self.flashcard_index = 0
-        self.flashcard_widget.setText(self.learn_set.flashcards[self.flashcard_index].original)
-        self.make_sure_buttons_locked_if_needed()

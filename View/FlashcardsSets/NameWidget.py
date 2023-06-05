@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QTableWidget, QLineEdit, QLabel, QWidget, QHBoxLayout
+from PySide6.QtWidgets import QLineEdit, QLabel, QWidget, QHBoxLayout
 
 class NameWidget(QWidget):
     def __init__(self) -> None:

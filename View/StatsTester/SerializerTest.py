@@ -1,5 +1,3 @@
-from View.BasicTester.BasicTestWidget import BasicTestWidget
-from PySide6.QtCore import Qt, Signal
 from View.StatsTester.StatsTestWidget import StatsTestWidget
 
 class SerializerTest(StatsTestWidget):

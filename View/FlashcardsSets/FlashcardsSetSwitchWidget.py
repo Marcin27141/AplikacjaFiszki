@@ -1,5 +1,4 @@
 from PySide6.QtWidgets import QStackedLayout, QWidget
-from View.FlashcardsSets.FlashcardsSetEditorWidget import FlashcardsSetEditorWidget
 from View.FlashcardsSets.SerializationSetEditorWidget import SerializationSetEditorWidget
 from View.FlashcardsSets.FlashcardsSetViewerWidget import FlashcardsSetViewerWidget
 from View.FlashcardsSets.FlashcardsSetCreatorWidget import FlashcardsSetCreatorWidget
@@ -21,7 +20,6 @@ class FlashcardsSetSwitchWidget(QWidget):
         self.learn_set_widget = FlashcardsSetLearnerWidget(self.controller)
         self.learn_set_widget.RETURN_TO_MENU.connect(lambda: self.stacked_layout.setCurrentWidget(self.show_sets_widget))
 
-        #self.edit_sets_widget = FlashcardsSetEditorWidget(self.controller)
         self.edit_sets_widget = SerializationSetEditorWidget(self.controller, SerializeController())
         self.edit_sets_widget.RETURN_TO_MENU.connect(lambda: self.stacked_layout.setCurrentWidget(self.show_sets_widget))
         self.edit_sets_widget.SHOW_STATS_VIEW.connect(self.show_set_for_stats)

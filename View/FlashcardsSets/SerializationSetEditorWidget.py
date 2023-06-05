@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QTableWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QMessageBox
+from PySide6.QtWidgets import QMessageBox
 from PySide6.QtCore import Qt, Signal
 from View.FlashcardsSets.FlashcardsSetEditorWidget import FlashcardsSetEditorWidget
 

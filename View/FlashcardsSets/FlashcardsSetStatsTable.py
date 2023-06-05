@@ -1,15 +1,6 @@
-from PySide6.QtWidgets import QTableWidget, QStyledItemDelegate, QTableWidgetItem, QHeaderView, QAbstractItemView, QMessageBox
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtWidgets import QTableWidget, QStyledItemDelegate, QTableWidgetItem, QHeaderView, QAbstractItemView
 from datetime import datetime
 from View.ViewUtilities import set_widget_font_size
-
-
-class NonEditableDelegate(QStyledItemDelegate):
-    def createEditor(self, parent, option, index):
-        return None
-
-    def editorEvent(self, event, model, option, index):
-        return False
 
 class FlashcardSetStatsTable(QTableWidget):   
     COLUMNS_COUNT = 4

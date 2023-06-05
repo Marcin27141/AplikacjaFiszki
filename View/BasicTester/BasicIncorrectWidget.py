@@ -1,5 +1,5 @@
-from PySide6.QtCore import Qt, QEvent, Signal
-from PySide6.QtWidgets import QVBoxLayout, QPushButton, QLabel, QWidget, QSizePolicy
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import QVBoxLayout, QPushButton, QLabel, QWidget
 from View.ViewUtilities import set_widget_font_size, make_font_bold
 
 class BasicIncorrectWidget(QWidget):

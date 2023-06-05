@@ -1,4 +1,3 @@
-import sqlite3
 from Model.Flashcards import StatsFlashcard
 from Model.FlashcardsSet import FlashcardsSet
 from Database.GeneralDatabaseManager import GeneralDatabaseManager

@@ -1,5 +1,4 @@
-import sys
-from PySide6.QtWidgets import QWidget, QLabel, QApplication, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
 from PySide6.QtCore import Qt, QTimer, Signal
 
 class TimerWidget(QWidget):

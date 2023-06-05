@@ -1,6 +1,5 @@
-from typing import Optional
-from PySide6.QtWidgets import QTableWidget, QLineEdit, QTableWidgetItem, QHeaderView, QAbstractItemView, QPushButton, QMessageBox
-from PySide6.QtCore import Qt, Signal, QObject
+from PySide6.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView, QMessageBox
+from PySide6.QtCore import Qt, Signal
 from View.ViewUtilities import set_widget_font_size
 
 class FlashcardsSetListTable(QTableWidget):     
@@ -16,7 +15,6 @@ class FlashcardsSetListTable(QTableWidget):
         self.populate_table(available_sets)
         self.itemClicked.connect(self.show_set_details)
 
-        #self.setRowCount(len(available_sets))
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.horizontalHeader().setSectionsMovable(False)
         self.horizontalHeader().setSectionsClickable(False)

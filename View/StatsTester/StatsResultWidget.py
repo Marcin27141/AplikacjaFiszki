@@ -1,7 +1,4 @@
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QVBoxLayout, QPushButton, QLabel, QWidget, QHBoxLayout
-from View.ViewUtilities import set_widget_font_size
-from View.StatsTester.TestedWordsListWidget import TestedWordsListWidget
 from View.StatsTester.BasicStatsResultWidget import BasicStatsResultWidget
 
 class StatsResultWidget(BasicStatsResultWidget):

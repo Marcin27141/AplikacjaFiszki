@@ -25,10 +25,10 @@ class Flashcard:
         self.edit_translation(new_translation)
 
 class StatsFlashcard(Flashcard):
-    def __init__(self, original, translation, times_correct=0, times_inorrect=0, last_tested=None) -> None:
+    def __init__(self, original, translation, times_correct=0, times_incorrect=0, last_tested=None) -> None:
         super().__init__(original, translation)
         self.times_correct = times_correct
-        self.times_incorrect = times_inorrect
+        self.times_incorrect = times_incorrect
         self.last_tested = last_tested
 
     def __getstate__(self):
@@ -41,7 +41,7 @@ class StatsFlashcard(Flashcard):
 
     def __setstate__(self, state):
         super().__setstate__(state['flashcard'])
-        self.time_right, self.times_incorrect, self.last_tested = state['stats_flashcard']
+        self.times_correct, self.times_incorrect, self.last_tested = state['stats_flashcard']
 
     def test_answer(self, answer):
         is_correct = super().test_answer(answer)

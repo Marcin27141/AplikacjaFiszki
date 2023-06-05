@@ -1,5 +1,7 @@
 from Flashcards import Flashcard, StatsFlashcard
 import time
+from datetime import datetime
+import pickle
 import pytest
 
 (TEST_ORIGINAL, TEST_TRANSLATION) = ("test1", "test2")
@@ -73,3 +75,17 @@ def test_stats_date_update():
     test_stat_flashcard.test_answer(TEST_TRANSLATION + "wrong answer")
     second_check = test_stat_flashcard.last_tested
     assert second_check != None and second_check != first_check
+
+@pytest.mark.parametrize("flashcard", [
+    StatsFlashcard(TEST_ORIGINAL, TEST_TRANSLATION, 0, 0, None),
+    StatsFlashcard("", "", 0, 0, None),
+    StatsFlashcard("", "", 0, 0, datetime.now()),
+])
+def test_flashcard_serialization(flashcard):
+    serialized = pickle.dumps(flashcard)
+    deserialized = pickle.loads(serialized)
+    return (flashcard.original == deserialized.original and
+            flashcard.translation == deserialized.translation and
+            flashcard.times_correct == deserialized.times_correct and
+            flashcard.times_incorrect == deserialized.times_incorrect and
+            flashcard.last_tested == deserialized.last_tested)

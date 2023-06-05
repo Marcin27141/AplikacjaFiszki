@@ -73,7 +73,7 @@ class TimeTestWidget(QWidget):
     def get_current_flashcard(self):
         return self.flashcards[self.flashcard_index]
 
-    def check_answer(self, button):
+    def check_answer(self):
         self.timer_widget.stop()
         button = self.sender()
         is_correct = self.get_current_flashcard().test_answer(button.text())
@@ -115,9 +115,12 @@ class TimeTestWidget(QWidget):
             self.show_test_summary()
 
     def show_test_summary(self):
+        self.timer_widget.stop()
         self.SHOW_TEST_SUMMARY_VIEW.emit()
 
     def reset(self, strong = False):
         self.flashcard_index = 0
         self.initialize_flashcard_label()
         self.reset_buttons_colors()
+        self.timer_widget.reset()
+        self.timer_widget.start()

@@ -15,6 +15,18 @@ class StatsTestWidget(BasicTestWidget):
         self.flashcards_correct = []
         self.flashcards_incorrect = []
 
+    def __getstate__(self):
+        state = super().__getstate__()
+        state_dict = {
+            'basic_test': state,
+            'stats_test': (self.original_flashcards, self.flashcards_correct, self.flashcards_incorrect)
+        }
+        return state_dict
+
+    def __setstate__(self, state):
+        super().__setstate__(state['basic_test'])
+        self.original_flashcards, self.flashcards_correct, self.flashcards_incorrect = state['stats_test']
+
     def load_flashcards_for_learning(self, flashcards_set):
         super().load_flashcards_for_learning(flashcards_set)
         self.original_flashcards = flashcards_set.flashcards

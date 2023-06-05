@@ -107,12 +107,15 @@ class FlashcardsSetEditorWidget(QWidget):
         NORMAL_TEST_CHOSEN = 0
         TIME_TEST_CHOSEN = 1
         if clicked_button == NORMAL_TEST_CHOSEN:
-            self.SHOW_TEST_VIEW.emit(self.displayed_set)
+            self.switch_to_test_widget()
         elif clicked_button == TIME_TEST_CHOSEN and set_is_eligible_for_time_test(self.displayed_set):
             self.SHOW_TIME_TEST_VIEW.emit(self.displayed_set)
         elif clicked_button == TIME_TEST_CHOSEN:
             time_test_information_box = self.get_time_test_unavailable_message_box()
             time_test_information_box.exec()
+
+    def switch_to_test_widget(self):
+        self.SHOW_TEST_VIEW.emit(self.displayed_set)
 
     def remove_set(self):
         question = QMessageBox.question(self, "Delete Set", "Are you sure you want to delete this set?",

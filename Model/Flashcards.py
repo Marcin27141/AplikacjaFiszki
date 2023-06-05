@@ -5,6 +5,12 @@ class Flashcard:
         self.original = original
         self.translation = translation
 
+    def __getstate__(self):
+        return self.original, self.translation
+
+    def __setstate__(self, state):
+        self.original, self.translation = state
+
     def test_answer(self, answer):
         return answer == self.translation
     
@@ -25,6 +31,17 @@ class StatsFlashcard(Flashcard):
         self.times_wrong = 0
         self.last_time_tested = None
 
+    def __getstate__(self):
+        state = super().__getstate__()
+        state.update({
+            'stats_flashcard': (self.times_right, self.times_wrong, self.last_time_tested)
+        })
+        return state
+
+    def __setstate__(self, state):
+        super().__setstate__(state)
+        self.time_right, self.times_wrong, self.last_time_tested = state['stats_flashcard']
+        
     def test_answer(self, answer):
         is_correct = super().test_answer(answer)
         self.last_time_tested = datetime.now()

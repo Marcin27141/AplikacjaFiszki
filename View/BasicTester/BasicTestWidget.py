@@ -32,7 +32,7 @@ class BasicTestWidget(QWidget):
         self.initialize_result_label()
 
         self.return_button = QPushButton("Return")
-        self.return_button.clicked.connect(lambda: self.RETURN_TO_MENU.emit())
+        self.return_button.clicked.connect(self.return_to_menu)
         set_widget_font_size(self.return_button, 20)
 
         test_layout = QVBoxLayout()
@@ -43,14 +43,22 @@ class BasicTestWidget(QWidget):
         test_layout.addWidget(self.return_button)
         self.setLayout(test_layout)
 
+    def __getstate__(self):
+        return self.flashcard_index, self.flashcards, self.flashcards_set
+
+    def __setstate__(self, state):
+        self.flashcard_index, self.flashcards, self.flashcards_set = state
+
     def load_flashcards_for_learning(self, flashcards_set):
+        self.flashcards_set = flashcards_set
         self.flashcards = flashcards_set.flashcards
         self.initialize_flashcard_label()
 
     def initialize_flashcard_label(self):
-        set_widget_font_size(self.original_label, 20)
+        set_widget_font_size(self.original_label, 30)
         self.original_label.setAlignment(Qt.AlignHCenter)
-        if self.flashcards: self.original_label.setText(self.flashcards[0].original)
+        #if self.flashcards: self.original_label.setText(self.flashcards[0].original)
+        if self.flashcards: self.original_label.setText(self.flashcards[self.flashcard_index].original)
 
     def initialize_input_text(self):
         set_widget_font_size(self.translation_text, 15)
@@ -85,6 +93,9 @@ class BasicTestWidget(QWidget):
             self.result_label.clear()
         else:
             self.show_test_summary()
+
+    def return_to_menu(self):
+        self.RETURN_TO_MENU.emit()
 
     def show_test_summary(self):
         self.SHOW_TEST_SUMMARY_VIEW.emit()

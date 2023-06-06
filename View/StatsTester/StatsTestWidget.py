@@ -1,5 +1,7 @@
 from View.BasicTester.BasicTestWidget import BasicTestWidget
 from PySide6.QtCore import Qt, Signal
+import random
+
 class TestResults:
     def __init__(self, all_flashcards, correct_flascards, incorrect_flashcards) -> None:
         self.all_flashcards = all_flashcards

@@ -10,6 +10,35 @@
             "request": "launch",
             //"program": "${file}",
             "program": "simple_app.py",
+            /*"args": [
+                "export_all_sets",
+                //"-n",
+                //"MySets",
+                "-d",
+                "TextSets\\ExportedSets",
+                "-s",
+                " - "
+              ],*/
+              /*"args": [
+                "export_set_to_file",
+                "--set",
+                "CzęściCiała",
+                //"-n",
+                //"MySet",
+                "-d",
+                "TextSets\\ExportedSets",
+                //"-s",
+                //","
+              ],*/
+            /*"args": [
+                "load_set_from_file",
+                "-f",
+                "test_import.txt",
+                "-n",
+                "ZwierzętaFiszki",
+                "-s",
+                " - "
+              ],*/
             "console": "integratedTerminal",
             "justMyCode": true
         }

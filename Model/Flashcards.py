@@ -51,3 +51,11 @@ class StatsFlashcard(Flashcard):
         else:
             self.times_incorrect += 1
         return is_correct        
+    
+    def tested_correct(self):
+        self.last_tested = datetime.now()
+        self.times_correct += 1
+
+    def tested_incorrect(self):
+        self.last_tested = datetime.now()
+        self.times_incorrect += 1

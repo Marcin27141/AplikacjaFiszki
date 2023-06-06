@@ -18,7 +18,8 @@ class SingleSetExporter(BaseExporter):
     def export_set_to_textfile(self):
         self.name = self.name if self.name else self.get_default_set_filename(self.set_name)
         file_alias = FileAlias(self.destination_directory, self.name)
-        self.name = self.FILE_OPERATOR.get_nonduplicate_filename(file_alias)
+        self.name = self.FILE_OPERATOR.get_nonduplicate_filename(file_alias, 'txt')
+        self.name = f"{self.name}.txt"
         set_to_export = self.get_set_by_name()
         set_text = self.get_set_to_text(set_to_export)
         file_alias = FileAlias(self.destination_directory, self.name)

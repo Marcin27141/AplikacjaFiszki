@@ -16,6 +16,10 @@ class FileOperator:
 
     def get_path(self, file_alias):
         return os.path.join(file_alias.directory, file_alias.filename)
+    
+    def get_path_with_extension(self, file_alias, extension):
+        extension_append = "" if not extension else f".{extension}"
+        return os.path.join(file_alias.directory, f"{file_alias.filename}{extension_append}")
 
     def create_directory(self, dir_name):
         os.makedirs(dir_name)
@@ -28,8 +32,12 @@ class FileOperator:
         with open(filepath, "w", encoding=self.DEFAULT_ENCODING) as file:
             file.write(input)
 
-    def get_nonduplicate_filename(self, file_alias):
-        DEFAULT_APPEND = '_copy'
-        if self.check_if_file_exists(self.get_path(file_alias)):
-            file_alias.filename = file_alias.filename+DEFAULT_APPEND
-        return file_alias.filename
+    def get_nonduplicate_filename(self, file_alias, extension = None):
+        def get_iteration_filename(filename):
+            idx = 1
+            original_filename = file_alias.filename
+            while self.check_if_file_exists(self.get_path_with_extension(file_alias, extension)):
+                file_alias.filename = f"{original_filename}({idx})"
+                idx += 1   
+            return file_alias.filename
+        return get_iteration_filename(file_alias.filename)

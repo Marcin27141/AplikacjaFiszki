@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser(
 )
 
 def load_set_from_file(args):
-    import_info = ImportInfo(args.filepath, args.name, args.separator)
+    import_info = ImportInfo(args.filepath, args.name, args.separator, args.is_reverse)
     importer = FlashcardsSetImporter(import_info)
 
     if not importer.check_if_file_exists(): print("File doesn't exist")
@@ -53,6 +53,7 @@ load_set_parser = subparsers.add_parser('load_set_from_file', help='load a new s
 load_set_parser.add_argument('-f', dest='filepath', required=True, help='Path to the file')
 load_set_parser.add_argument('-n', dest='name' , required=True, help='Name of the created set')
 load_set_parser.add_argument('-s', dest='separator' , required=True, help='Separator used in the file')
+load_set_parser.add_argument('-r', dest='is_reverse' , required=False, action='store_true', help='Indicates that translation comes before original')
 load_set_parser.set_defaults(func=load_set_from_file)
 
 export_set_parser = subparsers.add_parser('export_set_to_file', help='export an existing set to a file')

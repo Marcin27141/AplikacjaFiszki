@@ -94,6 +94,7 @@ class TimeTestWidget(QWidget):
 
     def answer_not_given(self):
         self.show_correct_answer()
+        self.get_current_flashcard().tested_incorrect()
         incorrect_buttons = [_button for _button in self.response_buttons if _button != self.correct_button]
         for incorrect_button in incorrect_buttons:
             incorrect_button.setStyleSheet(f"background-color: red; color: white")

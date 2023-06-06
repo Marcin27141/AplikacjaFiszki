@@ -17,8 +17,8 @@ class BaseExporter:
         self.name = export_info.destination_name
         self.separator = export_info.separator if export_info.separator else self.DEFAULT_SEPARATOR
     
-    def get_default_set_filename(self, flashcards_set):
-        return f'{flashcards_set.name}.txt'
+    def get_default_set_filename(self, flashcards_set_name):
+        return flashcards_set_name
     
     def check_if_directory_exists(self):
         return self.FILE_OPERATOR.check_if_directory_exists(self.destination_directory)

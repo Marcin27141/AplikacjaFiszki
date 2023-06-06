@@ -6,10 +6,11 @@ class WrongFileFormatException(Exception):
     "File was not formatted properly"
 
 class ImportInfo:
-    def __init__(self, filepath, name, separator) -> None:
+    def __init__(self, filepath, name, separator, is_reverse) -> None:
         self.filepath = filepath
         self.set_name = name
         self.separator = separator
+        self.is_reverse = is_reverse
 
 class FlashcardsSetImporter:
     FILE_OPERATOR = FileOperator()
@@ -19,6 +20,7 @@ class FlashcardsSetImporter:
         self.filepath = import_info.filepath
         self.set_name = import_info.set_name
         self.separator = import_info.separator
+        self.is_reverse = import_info.is_reverse
 
     def import_set(self):
         flashcards = self.get_flashcards_from_file()
@@ -47,6 +49,7 @@ class FlashcardsSetImporter:
             
     def convert_line_to_flashcard(self, line):
         (original, translation) = line.split(self.separator)
+        if self.is_reverse: (original, translation) = (translation, original)
         return StatsFlashcard(original.strip(), translation.strip())
     
     def create_set(self, flashcards):

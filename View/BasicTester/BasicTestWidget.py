@@ -57,7 +57,6 @@ class BasicTestWidget(QWidget):
     def initialize_flashcard_label(self):
         set_widget_font_size(self.original_label, 30)
         self.original_label.setAlignment(Qt.AlignHCenter)
-        #if self.flashcards: self.original_label.setText(self.flashcards[0].original)
         if self.flashcards: self.original_label.setText(self.flashcards[self.flashcard_index].original)
 
     def initialize_input_text(self):

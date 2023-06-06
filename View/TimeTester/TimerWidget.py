@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
 from PySide6.QtCore import Qt, QTimer, Signal
+from View.ViewUtilities import set_widget_font_size
 
 class TimerWidget(QWidget):
     TIMEOUT_SIGNAL = Signal()
@@ -12,6 +13,7 @@ class TimerWidget(QWidget):
 
         self.timer_label = QLabel()
         self.timer_label.setAlignment(Qt.AlignCenter)
+        set_widget_font_size(self.timer_label, 15)
         self.update_timer_label()
 
         layout = QVBoxLayout()

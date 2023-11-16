@@ -93,7 +93,8 @@ class FlashcardsSetEditorWidget(QWidget):
         test_kind_message_box.setWindowTitle("Choose test kind")
         test_kind_message_box.setText("What type of test do you want to take?")
         test_kind_message_box.addButton("Normal test", QMessageBox.ButtonRole.YesRole)
-        test_kind_message_box.addButton("Time test", QMessageBox.ButtonRole.NoRole)    
+        test_kind_message_box.addButton("Time test", QMessageBox.ButtonRole.YesRole)
+        test_kind_message_box.addButton("Cancel", QMessageBox.ButtonRole.NoRole).setVisible(False)
         return test_kind_message_box
     
     def get_time_test_unavailable_message_box(self):
